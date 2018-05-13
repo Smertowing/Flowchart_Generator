@@ -2,10 +2,11 @@ program FlowG_project;
 
 uses
   Vcl.Forms,
-  MainUn in '..\..\Flowchart_Generator\Flowchart_BKit\MainUn.pas' {Form1},
-  Model in '..\..\Flowchart_Generator\Flowchart_BKit\Units\Model.pas',
-  TypesAndVars in '..\..\Flowchart_Generator\Flowchart_BKit\Units\TypesAndVars.pas',
-  GraphicStruc in '..\..\Flowchart_Generator\Flowchart_BKit\Units\GraphicStruc.pas';
+  MainUn in 'MainUn.pas' {Form1},
+  data.Model in 'Units\data.Model.pas',
+  TypesAndVars in 'Units\TypesAndVars.pas',
+  draw.Structures in 'Units\draw.Structures.pas',
+  draw.Model in 'Units\draw.Model.pas';
 
 {$R *.res}
 

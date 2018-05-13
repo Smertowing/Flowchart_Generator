@@ -10,10 +10,10 @@ interface
     numberOfStruc = 7;
     StrucNames: array[1..numberOfStruc] of string[15] = ('implementation', 'procedure', 'function', 'if', 'while', 'for', 'repeat');
 
+    numberOfBlockDecl = 7;
+    BlockDeclNames: array[1..numberOfBlockDecl] of string[10] = ('procedure', 'function', 'if', 'while', 'for', 'repeat', 'begin');
+
   type
-    TCoord = record
-      x, y: Integer;
-    end;
 
     PTreeStructure = ^TTreeStructure;
     TChilds = array of PTreeStructure;
@@ -28,10 +28,26 @@ interface
   //    NextOne : PTreeStructure;
     end;
 
+    TStructuresList = (Terminator, Block, Choice, Data, LoopBegin, LoopEnd);
+    PDrawList = ^TDrawList;
+    TChildsDraw = array of PDrawList;
+    TDrawList = record
+      x,y,height,width,space : Integer;
+      chAvailable : Boolean;
+      next : PDrawList;
+      numberOfChildren : integer;
+      children : TChildsDraw;
+      structure : TStructuresList;
+      branch : PTreeStructure;
+      caption : string;
+    end;
+
   var
     StrList: TStringList;
     TreeStructure: PTreeStructure;
+    DrawList: PDrawList;
     currentFile: string;
+
 implementation
 
 end.

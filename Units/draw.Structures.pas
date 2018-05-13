@@ -1,4 +1,4 @@
-unit GraphicStruc;
+unit draw.Structures;
 
 interface
   uses TypesAndVars,
@@ -6,19 +6,19 @@ interface
        Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.StdCtrls, Vcl.ComCtrls,
        Vcl.ExtCtrls, System.Actions, Vcl.ActnList;
 
-  procedure drawTerminator(pb1:TPaintBox; x,y,width,height:Integer);
-  procedure drawFunctionalBlock(pb1:TPaintBox; x,y,width,height:Integer);
-  procedure drawBinaryChoice(pb1:TPaintBox; x,y,width,height:Integer);
-  procedure drawLoopBegin(pb1:TPaintBox; x,y,width,height:Integer);
-  procedure drawLoopEnd(pb1:TPaintBox; x,y,width,height:Integer);
-
+  procedure drawTerminator(pb1:TPaintBox; x,y,width,height,space:Integer);
+  procedure drawFunctionalBlock(pb1:TPaintBox; x,y,width,height,space:Integer);
+  procedure drawBinaryChoice(pb1:TPaintBox; x,y,width,height,space:Integer);
+  procedure drawDataBlock(pb1:TPaintBox; x,y,width,height,space:Integer);
+  procedure drawLoop(pb1:TPaintBox; x,y,width,height, space:Integer);
 
 implementation
 
-procedure drawTerminator(pb1:TPaintBox; x,y,width,height:Integer);
+procedure drawTerminator(pb1:TPaintBox; x,y,width,height, space:Integer);
 var R:Integer;
 begin
   R:=round(height/2);
+  y := y+space;
   with pb1.Canvas do
     begin
       Arc(x,y,x+height,y+height,x+R,y,x+R,y+height);
@@ -30,8 +30,9 @@ begin
     end;
 end;
 
-procedure drawFunctionalBlock(pb1:TPaintBox; x,y,width,height:Integer);
+procedure drawFunctionalBlock(pb1:TPaintBox; x,y,width,height, space:Integer);
 begin
+  y := y+space;
   with pb1.Canvas do
     begin
       MoveTo(x,y);
@@ -42,9 +43,10 @@ begin
     end;
 end;
 
-procedure drawBinaryChoice(pb1:TPaintBox; x,y,width,height:Integer);
+procedure drawBinaryChoice(pb1:TPaintBox; x,y,width,height,space:Integer);
 var R1,R2:Integer;
 begin
+  y := y+space;
   R1:=Round(height/2);
   R2:=Round(width/2);
   with pb1.Canvas do
@@ -57,7 +59,22 @@ begin
     end;
 end;
 
-procedure drawLoopBegin(pb1:TPaintBox; x,y,width,height:Integer);
+procedure drawDataBlock(pb1:TPaintBox; x,y,width,height,space:Integer);
+var R:Integer;
+begin
+  y := y+space;
+  R:=Round(width/4);
+  with pb1.Canvas do
+    begin
+      MoveTo(x+R,y);
+      LineTo(x+width,y);
+      LineTo(x+width-R,y+height);
+      LineTo(x,y+height);
+      LineTo(x+R,y);
+    end;
+end;
+
+procedure drawLoop(pb1:TPaintBox; x,y,width,height, space:Integer);
 var R1,R2:Integer;
 begin
   R1:=Round(height/4);
@@ -72,13 +89,9 @@ begin
       LineTo(x,y+R1);
       LineTo(x+R2,y);
     end;
-end;
 
-procedure drawLoopEnd(pb1:TPaintBox; x,y,width,height:Integer);
-var R1,R2:Integer;
-begin
-  R1:=Round(height/4);
-  R2:=Round(width/4);
+  y:= y + space;
+
   with pb1.Canvas do
     begin
       MoveTo(x,y);
@@ -89,6 +102,7 @@ begin
       LineTo(x,y+height-R1);
       LineTo(x,y);
     end;
+
 end;
 
 

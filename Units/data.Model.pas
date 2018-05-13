@@ -1,4 +1,4 @@
-unit Model;
+unit data.Model;
 
 interface
 
@@ -8,8 +8,8 @@ interface
        Vcl.ExtCtrls;
 
 
-
-  procedure CreatingBlocks();
+  function checkStr(const Str:string; const S:string):boolean;
+  procedure CreatingDataModel();
   procedure EraseTree(var TreeNode: PTreeStructure);
   procedure StringListSeek(var CurrentTreeNode: PTreeStructure; var DT1, DT2: boolean);
 //  procedure checkProcAndFunc(const Str: string; LineNumb: integer; var CurrentTreeNode: PTreeStructure);
@@ -300,7 +300,7 @@ begin
     end;
 end;
 
-procedure CreatingBlocks();
+procedure CreatingDataModel();
 begin
   CurrentLine := 1;
   DN1 := false;

@@ -3,7 +3,7 @@ unit MainUn;
 interface
 
 uses
-  TypesAndVars, Model, GraphicStruc,
+  TypesAndVars, data.Model, draw.Structures, draw.Model,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.StdCtrls, Vcl.ComCtrls,
   Vcl.ExtCtrls, System.Actions, Vcl.ActnList;
@@ -104,7 +104,8 @@ begin
 //  drawTerminator(pbMain,50,50,100,50);
 //  drawFunctionalBlock(pbMain, 50,50,100,50);
 //  drawBinaryChoice(pbMain,50,50,100,50);
-//  drawLoopEnd(pbMain,50,50,100,50);
+//  drawLoop(pbMain,50,50,100,50,400)
+//  drawDataBlock(pbMain,50,50,100,50);
 end;
 
 procedure TFlowchart_Manager.CreateTree();
@@ -124,7 +125,7 @@ begin
     CurrentFile := dlgOpenFile.FileName;
   TreeStructure := nil;
   StartRoutine();
-  CreatingBlocks();
+  CreatingDataModel();
   createtree;
 end;
 
