@@ -6,6 +6,7 @@ interface
        Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.StdCtrls, Vcl.ComCtrls,
        Vcl.ExtCtrls;
 
+  procedure CreatingDrawModel(Form: TForm; paintBox: TPaintBox);
 
 implementation
 
@@ -18,31 +19,75 @@ var
   CurrentLine: integer;
   CurrX, CurrY: integer;
 
-function CreateDrawList(): PDrawList;
+procedure CreateDrawUnit(var DrawUnit: PDrawList);
 begin
-  New(Result);
-  SetLength (Result^.children, 0);
-  Result^.chAvailable := False;
-  Result^.numberOfChildren := 0;
-  Result^.next := nil;
-  Result^.branch := nil;
+  New(DrawUnit);
+  SetLength (DrawUnit^.children, 0);
+  DrawUnit^.chAvailable := False;
+  DrawUnit^.numberOfChildren := 0;
+//  DrawUnit^.next := nil;
+  DrawUnit^.branch := nil;
+  DrawUnit^.structure := Another;
 end;
 
-procedure CopyingTree();
+{ procedure CopyingTree();
 begin
-  drawList := CreateDrawList();
+  drawList := CreateDraUnit();
   DrawList^.branch := TreeStructure;
   DrawList^.height := 0;
   DrawList^.width := 0;
 end;
+                             }
 
-procedure CreatingDrawModel(Form: TForm; paintBox: TPaintBox);
+procedure DeclStruct(var Structure: TStructuresList; i: integer);
 begin
-  CopyingTree();
+  case i of
+    1: Structure := Terminator;
+    2: Structure := Terminator;
+    3: Structure := Choice;
+    4: Structure := Loop;
+    5: Structure := Loop;
+    6: Structure := Loop;
+    7: Structure := Block;
+  else
+    Structure := Another;
+  end;
+end;
+
+procedure FillDrawUnit(var DList: PDrawList; Tree: PTreeStructure);
+var
+  i,k: integer;
+begin
+  K:=0;
+  while  k <= Tree^.NumberOfChildren-1 do
+  begin
+    Inc(DList^.numberOfChildren);
+    SetLength(DList^.children, DList^.numberOfChildren);
+    CreateDrawUnit(DList^.children[k]);
+    FillDrawUnit(Dlist^.children[k], Tree^.Children[k]);
+    Inc(k);
+  end;
+
+  DList^.height := 50;
+  DList^.width := 100;
+  if DList^.numberOfChildren <> 0 then
+    DList^.chAvailable := True
+  else
+    DList^.chAvailable := False;
+  DList^.branch := Tree;
+  DList^.caption := Tree^.BlockName;
+
+  i:=1;
+  while i<=numberOfBlockDecl do
+      begin
+        if checkStr(DList^.caption, trim(BlockDeclNames[i])) then
+          DeclStruct(DList^.structure, i);
+      inc(i);
+      end;
 
 end;
 
-procedure DrawBlock(x,y,Width,Height,i: Integer; var DList: PDrawList);
+{ procedure DrawBlock(x,y,Width,Height,i: Integer; var DList: PDrawList);
 begin
   case i of
     1: drawTerminator(pbMain,x,y,Width,Height,0);
@@ -53,7 +98,7 @@ begin
     6: drawLoop(pbMain,x,y,Width,Height,0);
     7: drawFunctionalBlock(pbMain,x,y,Width,Height,0);
   end;
-end;
+end;            }
 
 procedure DrawProccesingRec(var DList: PDrawList; var SpaceX, SpaceY: integer);
 var
@@ -61,9 +106,8 @@ var
   x, y: integer;
   NothingToDo:boolean;
 begin
-  repeat
   y:=CurrY;
-  x:=CurrY-Round(DList^.width/2);
+  x:=Currx-Round(DList^.width/2);
   tempSpaceX:=0;
   tempSpaceY:=0;
   if DList^.chAvailable then
@@ -77,13 +121,13 @@ begin
       end;
     end;
 
-  tempSpaceY := SpaceY+DList^.Height;
+  tempSpaceY := SpaceY+skipSpace;
   tempSpaceX := DList^.width;
-  SpaceY := SpaceY+DList^.Height+skipSpace;
+
 
   i:=1;
   NothingToDo:=true;
-    while i<=numberOfBlockDecl do
+  {  while i<=numberOfBlockDecl do
       begin
         if checkStr(DList^.caption, trim(BlockDeclNames[i])) then
           begin
@@ -91,21 +135,33 @@ begin
             NothingToDo := False;
           end;
       inc(i);
-      end;
+      end;           }
 
-  DList := DList^.next;
-  until DList = nil;
+  case DList^.structure of
+    Terminator: drawTerminator(pbMain,x,y,tempSpaceX,DList^.height, tempspaceY);
+    Choice: drawBinaryChoice(pbMain,x,y,tempSpaceX,DList^.height,tempspaceY);
+    DataBlock: drawDataBlock(pbMain,x,y,tempSpaceX,DList^.height,tempspaceY);
+    Loop: drawLoop(pbMain,x,y,tempSpaceX,DList^.height,tempspaceY);
+    Block: drawFunctionalBlock(pbMain,x,y,tempSpaceX,DList^.height,tempspaceY);
+   end;
+
+  SpaceY := SpaceY+DList^.Height+skipSpace;
 end;
 
-
-procedure clearScreen(Form: TForm; paintBox: TPaintBox);
+procedure CreatingDrawModel(Form: TForm; paintBox: TPaintBox);
+var
+  x, y: Integer;
 begin
-  with paintBox do
-    begin
-      Canvas.Rectangle(0,0, Form.Width, form.Height);
-    end;
-end;
+  pbMain:=PaintBox;
+  CreateDrawUnit(DrawList);
+  FillDrawUnit(DrawList, TreeStructure);
 
+  CurrX := 300;
+  CurrY := 100;
+  x:=0;
+  y:=0              ;
+  DrawProccesingRec(DrawList, x, y);
+end;
 
 
 end.

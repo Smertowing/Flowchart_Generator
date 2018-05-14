@@ -106,6 +106,7 @@ begin
 //  drawBinaryChoice(pbMain,50,50,100,50);
 //  drawLoop(pbMain,50,50,100,50,400)
 //  drawDataBlock(pbMain,50,50,100,50);
+  CreatingDrawModel(Flowchart_Manager, pbMain);
 end;
 
 procedure TFlowchart_Manager.CreateTree();

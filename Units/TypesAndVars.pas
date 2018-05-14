@@ -28,13 +28,14 @@ interface
   //    NextOne : PTreeStructure;
     end;
 
-    TStructuresList = (Terminator, Block, Choice, Data, LoopBegin, LoopEnd);
+    TStructuresList = (Terminator, Block, Choice, DataBlock, Loop, Another);
     PDrawList = ^TDrawList;
     TChildsDraw = array of PDrawList;
     TDrawList = record
-      x,y,height,width,space : Integer;
+  //    x,y,space  :inteher;
+      height,width: Integer;
       chAvailable : Boolean;
-      next : PDrawList;
+  //   next : PDrawList;
       numberOfChildren : integer;
       children : TChildsDraw;
       structure : TStructuresList;

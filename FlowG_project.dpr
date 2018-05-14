@@ -6,7 +6,8 @@ uses
   data.Model in 'Units\data.Model.pas',
   TypesAndVars in 'Units\TypesAndVars.pas',
   draw.Structures in 'Units\draw.Structures.pas',
-  draw.Model in 'Units\draw.Model.pas';
+  draw.Model in 'Units\draw.Model.pas',
+  Screen in 'Units\Screen.pas';
 
 {$R *.res}
 
