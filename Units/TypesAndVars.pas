@@ -10,19 +10,19 @@ interface
     numberOfStruc = 7;
     StrucNames: array[1..numberOfStruc] of string[15] = ('implementation', 'procedure', 'function', 'if', 'while', 'for', 'repeat');
 
-    numberOfBlockDecl = 7;
-    BlockDeclNames: array[1..numberOfBlockDecl] of string[10] = ('procedure', 'function', 'if', 'while', 'for', 'repeat', 'begin');
+    numberOfBlockDecl = 9;
+    BlockDeclNames: array[1..numberOfBlockDecl] of string[10] = ('procedure', 'function', 'if', 'while', 'for', 'repeat', 'begin', 'code', 'else');
 
   type
 
     PTreeStructure = ^TTreeStructure;
     TChilds = array of PTreeStructure;
     TTreeStructure = record
-      BlockName : string[100];
+      BlockName : string[200];
   //    StartLine : integer;
       EndLine : Integer;
       DeclarationLine : integer;
-      Coordinates : TCoord;
+  //    Coordinates : TCoord;
       NumberOfChildren : integer;
       Children : TChilds;
   //    NextOne : PTreeStructure;

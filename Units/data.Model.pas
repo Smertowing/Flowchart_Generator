@@ -59,7 +59,7 @@ Valid:=False;
 TempI := AnsiPos(S, AnsiLowerCase(Str));
 if (tempI = 1) and ((Str[tempI+length(S)] = ' ') or (Str[tempI+length(S)] = ';') or (Length(Str) = length(s))) then
   Valid := True;
-if (tempI > 1) and (Str[tempI-1] = ' ') then
+if (tempI > 1) and ((Str[tempI-1] = ' ') or (Str[tempI-1] = #9)) then
   begin
     if  length(Str) = (Length(s)+TempI-1)  then
       begin
@@ -165,27 +165,54 @@ return:=false;
 end;
 
 procedure NewChild(const Str: string; var CurrentTreeNode: PTreeStructure);
-var   NextTreeNode: PTreeStructure;
+var   NextTreeNode, TempTreeNode: PTreeStructure;
    //   i: Integer;
       DT1, DT2: boolean;
    //   tempS1, tempS2: string;
 begin
+  if CurrentTreeNode^.BlockName <> '' then
+  if not (checkStr(CurrentTreeNode^.BlockName, 'procedure')) and not (checkStr(CurrentTreeNode^.BlockName, 'function')) and not (checkStr(CurrentTreeNode^.BlockName, 'implementation')) then
+  if (CurrentTreeNode^.NumberOfChildren <> 0) then
+    begin
+      if (CurrentLine - CurrentTreeNode^.Children[CurrentTreeNode^.NumberOfChildren-1]^.EndLine > 1) then
+        begin
+        Inc(CurrentTreeNode^.NumberOfChildren);
+        SetLength(CurrentTreeNode^.Children, CurrentTreeNode^.NumberOfChildren);
+        NextTreeNode := CreateNode;
+
+
+
+        NextTreeNode^.DeclarationLine := CurrentTreeNode^.Children[CurrentTreeNode^.NumberOfChildren-2]^.EndLine + 1;
+        NextTreeNode^.EndLine := CurrentLine-1;
+        if checkStr(StrList[NextTreeNode^.DeclarationLine], 'else') then
+          NextTreeNode^.BlockName := 'else'
+        else
+          NextTreeNode^.BlockName := 'code';
+        NextTreeNode^.NumberOfChildren := 0;
+        SetLength(NextTreeNode^.Children, 0);
+        CurrentTreeNode^.Children[CurrentTreeNode^.NumberOfChildren - 1] := NextTreeNode;
+        end;
+    end;
+
+  if CurrentTreeNode^.BlockName <> '' then
+  if not (checkStr(CurrentTreeNode^.BlockName, 'procedure')) and not (checkStr(CurrentTreeNode^.BlockName, 'function')) and not (checkStr(CurrentTreeNode^.BlockName, 'implementation')) then
+  if (CurrentTreeNode^.NumberOfChildren = 0) and (CurrentLine - CurrentTreeNode^.DeclarationLine > 1) then
+    begin
+      Inc(CurrentTreeNode^.NumberOfChildren);
+      SetLength(CurrentTreeNode^.Children, CurrentTreeNode^.NumberOfChildren);
+      NextTreeNode := CreateNode;
+      NextTreeNode^.BlockName := 'code';
+      NextTreeNode^.DeclarationLine := CurrentTreeNode^.DeclarationLine + 1;
+      NextTreeNode^.EndLine := CurrentLine-1;
+      NextTreeNode^.NumberOfChildren := 0;
+      SetLength(NextTreeNode^.Children, 0);
+      CurrentTreeNode^.Children[CurrentTreeNode^.NumberOfChildren - 1] := NextTreeNode;
+    end;
+
   Inc(CurrentTreeNode^.NumberOfChildren);
   SetLength(CurrentTreeNode^.Children, CurrentTreeNode^.NumberOfChildren);
 
   NextTreeNode := CreateNode;
-
- { tempS1 := str;
-  tempS2 := '';
-  i:=1;
-  while tempS1[i] = ' ' do
-    Inc(i);
-  while tempS1[i] <> ' ' do
-    begin
-    tempS2 := tempS2 + tempS1[i];
-    Inc(i);
-    end;                                      }
-
   NextTreeNode^.BlockName := Trim(str);
   NextTreeNode^.DeclarationLine := CurrentLine;
 
@@ -200,7 +227,39 @@ if checkStr(Str, 'procedure') or checkStr(Str,'function')  then  skipToAfterFP(C
 
 
   StringListSeek(NextTreeNode, DT1, DT2);
-  NextTreeNode^.EndLine := CurrentLine-1;
+  if checkStr(NextTreeNode^.BlockName, 'begin') then
+    begin
+      NextTreeNode^.EndLine := CurrentLine;
+
+      if (NextTreeNode^.NumberOfChildren <> 0) and (CurrentLine - NextTreeNode^.Children[NextTreeNode^.NumberOfChildren-1]^.EndLine > 1) then
+        begin
+          Inc(NextTreeNode^.NumberOfChildren);
+          SetLength(NextTreeNode^.Children, NextTreeNode^.NumberOfChildren);
+          TempTreeNode := CreateNode;
+          TempTreeNode^.BlockName := 'code';
+          TempTreeNode^.DeclarationLine := NextTreeNode^.Children[NextTreeNode^.NumberOfChildren-2]^.EndLine + 1;
+          TempTreeNode^.EndLine := CurrentLine-1;
+          TempTreeNode^.NumberOfChildren := 0;
+          SetLength(TempTreeNode^.Children, 0);
+          NextTreeNode^.Children[NextTreeNode^.NumberOfChildren - 1] := TempTreeNode;
+        end;
+
+      if (NextTreeNode^.NumberOfChildren = 0) and (CurrentLine - NextTreeNode^.DeclarationLine > 1) then
+        begin
+          Inc(NextTreeNode^.NumberOfChildren);
+          SetLength(NextTreeNode^.Children, NextTreeNode^.NumberOfChildren);
+          TempTreeNode := CreateNode;
+          TempTreeNode^.BlockName := 'code';
+          TempTreeNode^.DeclarationLine := NextTreeNode^.DeclarationLine + 1;
+          TempTreeNode^.EndLine := CurrentLine-1;
+          TempTreeNode^.NumberOfChildren := 0;
+          SetLength(TempTreeNode^.Children, 0);
+          NextTreeNode^.Children[NextTreeNode^.NumberOfChildren - 1] := TempTreeNode;
+        end;
+
+    end
+  else
+    NextTreeNode^.EndLine := CurrentLine-1;
   CurrentTreeNode^.Children[CurrentTreeNode^.NumberOfChildren - 1] := NextTreeNode;
 end;
 
@@ -300,14 +359,34 @@ begin
     end;
 end;
 
+procedure HealTreeStructure(var HeadTree: PTreeStructure);
+var
+  tempTree: PTreeStructure;
+  i: Integer;
+begin
+  if (HeadTree^.NumberOfChildren = 1) then
+    if (checkStr(HeadTree^.Children[0]^.BlockName, 'implementation')) then
+    begin
+      tempTree := HeadTree^.Children[0];
+      HeadTree^.NumberOfChildren :=  tempTree^.NumberOfChildren;
+      SetLength(HeadTree^.Children, HeadTree^.NumberOfChildren);
+      for i := 0 to HeadTree^.NumberOfChildren - 1 do
+        begin
+          HeadTree^.Children[i] := tempTree^.Children[i];
+        end;
+    Dispose(tempTree);
+    end;
+end;
+
 procedure CreatingDataModel();
 begin
   CurrentLine := 1;
   DN1 := false;
   DN2 := false;
   SkipToStart(CurrentLine);
-  TempTreeStructure := CreateNode; 
+  TempTreeStructure := CreateNode;
   StringListSeek(TempTreeStructure, DN1, DN2);
+  HealTreeStructure(TempTreeStructure);
   TreeStructure := TempTreeStructure;
 end;
 

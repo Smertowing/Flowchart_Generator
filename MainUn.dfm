@@ -2,7 +2,7 @@ object Flowchart_Manager: TFlowchart_Manager
   Left = 0
   Top = 0
   Caption = 'Flowchart_Manager'
-  ClientHeight = 424
+  ClientHeight = 404
   ClientWidth = 980
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -19,7 +19,7 @@ object Flowchart_Manager: TFlowchart_Manager
     Left = 0
     Top = 0
     Width = 361
-    Height = 424
+    Height = 404
     Align = alLeft
     TabOrder = 0
     object splMemoTree: TSplitter
@@ -46,7 +46,7 @@ object Flowchart_Manager: TFlowchart_Manager
       Left = 1
       Top = 237
       Width = 359
-      Height = 186
+      Height = 166
       Align = alClient
       ScrollBars = ssVertical
       TabOrder = 1
@@ -65,7 +65,7 @@ object Flowchart_Manager: TFlowchart_Manager
     Left = 361
     Top = 0
     Width = 619
-    Height = 424
+    Height = 404
     HorzScrollBar.ButtonSize = 10
     VertScrollBar.ButtonSize = 20
     VertScrollBar.ParentColor = False

@@ -1,12 +1,13 @@
 unit Screen;
 
 interface
-  uses TypesAndVars,
+  uses TypesAndVars, draw.Model,
        Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
        Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.StdCtrls, Vcl.ComCtrls,
        Vcl.ExtCtrls;
 
 procedure clearScreen(Form: TForm; paintBox: TPaintBox);
+procedure screenUpdate(Form: TForm; paintBox: TPaintBox);
 
 implementation
 
@@ -18,5 +19,10 @@ begin
     end;
 end;
 
+procedure screenUpdate(Form: TForm; paintBox: TPaintBox);
+begin
+  clearScreen(Form, paintBox);
+  drawModel(Form,paintBox);
+end;
 
 end.

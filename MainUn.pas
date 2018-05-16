@@ -3,7 +3,7 @@ unit MainUn;
 interface
 
 uses
-  TypesAndVars, data.Model, draw.Structures, draw.Model,
+  TypesAndVars, data.Model, draw.Structures, draw.Model, Screen,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.StdCtrls, Vcl.ComCtrls,
   Vcl.ExtCtrls, System.Actions, Vcl.ActnList;
@@ -65,7 +65,8 @@ end;
 
 procedure TFlowchart_Manager.pbMainPaint(Sender: TObject);
 begin
- //  pbMain.Canvas.Rectangle(50,50,100,2000);
+  if DrawList <> nil then
+    screenUpdate(Flowchart_Manager,pbMain);
 
 end;
 
@@ -75,7 +76,6 @@ var
   tempI: Integer;
   tempShift: Integer;
 begin
-
   i := 1;
   while i <= TempTreeStructure^.NumberOfChildren do
     begin
@@ -106,7 +106,8 @@ begin
 //  drawBinaryChoice(pbMain,50,50,100,50);
 //  drawLoop(pbMain,50,50,100,50,400)
 //  drawDataBlock(pbMain,50,50,100,50);
-  CreatingDrawModel(Flowchart_Manager, pbMain);
+  if TreeStructure <> nil then
+    CreatingDrawModel(Flowchart_Manager, pbMain);
 end;
 
 procedure TFlowchart_Manager.CreateTree();

@@ -18,6 +18,15 @@ procedure drawTerminator(pb1:TPaintBox; x,y,width,height, space:Integer);
 var R:Integer;
 begin
   R:=round(height/2);
+  with pb1.Canvas do
+    begin
+      Arc(x,y,x+height,y+height,x+R,y,x+R,y+height);
+      Arc(x+width-height,y,x+width,y+height,x+width-R,y+height,x+width-R,y);
+      MoveTo(x+r,y);
+      LineTo(x+width-r,y);
+      MoveTo(x+r,y+height);
+      LineTo(x+width-r,y+height);
+    end;
   y := y+space;
   with pb1.Canvas do
     begin
