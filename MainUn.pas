@@ -106,6 +106,7 @@ begin
 //  drawBinaryChoice(pbMain,50,50,100,50);
 //  drawLoop(pbMain,50,50,100,50,400)
 //  drawDataBlock(pbMain,50,50,100,50);
+  clearScreen(Flowchart_Manager,pbMain);
   if TreeStructure <> nil then
     CreatingDrawModel(Flowchart_Manager, pbMain);
 end;
@@ -125,6 +126,7 @@ procedure TFlowchart_Manager.fileOpenExecute(Sender: TObject);
 begin
   if dlgOpenFile.Execute then
     CurrentFile := dlgOpenFile.FileName;
+  clearScreen(Flowchart_Manager,pbMain);
   TreeStructure := nil;
   StartRoutine();
   CreatingDataModel();

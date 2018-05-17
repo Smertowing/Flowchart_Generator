@@ -11,6 +11,7 @@ interface
   procedure drawBinaryChoice(pb1:TPaintBox; x,y,width,height,space:Integer);
   procedure drawDataBlock(pb1:TPaintBox; x,y,width,height,space:Integer);
   procedure drawLoop(pb1:TPaintBox; x,y,width,height, space:Integer);
+  procedure drawLine(pb1:TPaintBox; x1,y1,x2,y2:Integer);
 
 implementation
 
@@ -114,5 +115,35 @@ begin
 
 end;
 
+procedure drawLine(pb1:TPaintBox; x1,y1,x2,y2:Integer);
+begin
+  if (x1=x2) or (y1=y2) then
+    with pb1.Canvas do
+      begin
+        MoveTo(x1,y1);
+        LineTo(x2,y2);
+      end
+   else
+    begin   
+      if x1>x2 then
+        begin
+          with pb1.Canvas do
+          begin
+            MoveTo(x1,y1);
+            LineTo(x1,y2);
+            LineTo(x2,y2);
+          end
+        end
+      else
+        begin
+          with pb1.Canvas do
+          begin
+            MoveTo(x1,y1);
+            LineTo(x2,y1);
+            LineTo(x2,y2);
+           end
+        end;
+    end;
+end;
 
 end.

@@ -32,8 +32,8 @@ interface
     PDrawList = ^TDrawList;
     TChildsDraw = array of PDrawList;
     TDrawList = record
-  //    x,y,space  :inteher;
-      height,width: Integer;
+  //   x,y,space  :inteher;
+  //   height,width: Integer;
       chAvailable : Boolean;
   //   next : PDrawList;
       numberOfChildren : integer;

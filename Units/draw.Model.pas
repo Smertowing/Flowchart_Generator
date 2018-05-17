@@ -54,8 +54,8 @@ begin
     Inc(k);
   end;
 
-  DList^.height := 50;
-  DList^.width := 100;
+//  DList^.height := 50;
+//  DList^.width := 100;
   if DList^.numberOfChildren <> 0 then
     DList^.chAvailable := True
   else
@@ -72,86 +72,132 @@ begin
       end;
 end;
 
-{ procedure DrawBlock(x,y,Width,Height,i: Integer; var DList: PDrawList);
+procedure HealDrawStructure(var DList: PDrawList);
+var
+  i: Integer;
 begin
-  case i of
-    1: drawTerminator(pbMain,x,y,Width,Height,0);
-    2: drawTerminator(pbMain,x,y,Width,Height,0);
-    3: drawBinaryChoice(pbMain,x,y,Width,Height,0);
-    4: drawLoop(pbMain,x,y,Width,Height,0);
-    5: drawLoop(pbMain,x,y,Width,Height,0);
-    6: drawLoop(pbMain,x,y,Width,Height,0);
-    7: drawFunctionalBlock(pbMain,x,y,Width,Height,0);
-  end;
-end;            }
+  for i := 0 to DList^.numberOfChildren - 1 do
+    begin
+      DList^.children[i]^.structure := Terminator;
+    end;
+
+end;
 
 procedure drawModel(Form: TForm; paintBox: TPaintBox);
 const
   skipSpace = 50;
+  basicHeight = 50;
+  basicWidth = 100;
 var
   k: Integer;
   x, y: Integer;
   CurrX, CurrY: integer;
+  indentX, indentY: integer;
 
-procedure DrawProccesingRec(var DList: PDrawList; var SpaceX, SpaceY: integer);
+procedure DrawProccesingRec(var DList: PDrawList; var indentX:integer);
 var
-  i, tempSpaceX, tempSpaceY, tempWidth, tempHeight: integer;
+  i: integer;
   x, y: integer;
+
+procedure DrawProccesingBlock(var DrList: PDrawList);
+var
+  j: Integer;
 begin
-  y:=CurrY;
-  CurrY := CurrY + DList^.height + skipSpace;
-  x:=CurrX-Round(DList^.width/2);
-  tempSpaceX:=0;
-  tempSpaceY:=0;
-  if DList^.chAvailable then
+  if DrList^.numberOfChildren <> 0 then
+    for j := 0 to DrList^.numberOfChildren - 1 do
+      DrawProccesingRec(DrList^.children[j],indentX);
+end;
+
+procedure DrawProccesingChoice(var DrList: PDrawList);
+var
+  x1,y1, tempIndent, tempY: Integer;
+begin
+  if DrList^.numberOfChildren <> 0 then
     begin
-    i:=0;
-    while i <= DList^.numberOfChildren-1 do
+    x1:=CurrX;
+    y1:=CurrY;
+    CurrY := CurrY + basicHeight + skipSpace;
+    DrawProccesingRec(DrList^.children[0], indentX);
+    drawBinaryChoice(pbBox,x1,y1,basicWidth,basicHeight,indentY);
+    if DrList^.numberOfChildren > 1 then
       begin
-      DrawProccesingRec(DList^.children[i], tempSpaceX, tempSpaceY);
-      Inc(i);
+      tempY := CurrY;
+      tempIndent := CurrX;
+      CurrY := y1 + basicHeight + skipSpace;
+      CurrX := x1 + skipSpace + basicWidth;
+      DrawProccesingRec(DrList^.children[2], indentX);
+      drawLine(pbBox, CurrX+Round(basicWidth/2), CurrY, tempIndent+Round(basicWidth/2), CurrY);
+      if tempY > CurrY then
+        CurrY := tempY;
+      CurrX := tempIndent;
+      CurrY := CurrY + skipSpace;
+      drawLine(pbBox, X1+basicWidth, Y1+Round(basicHeight/2), X1+Round(basicWidth/2)+ skipSpace + basicWidth, Y1+basicHeight+skipSpace);
+
       end;
+    drawLine(pbBox, X1+Round(basicWidth/2), Y1+basicHeight, X1+Round(basicWidth/2), Y1+basicHeight+skipSpace);
+    drawLine(pbBox, CurrX+Round(basicWidth/2), CurrY-skipSpace, CurrX+Round(basicWidth/2), CurrY);
+
     end;
+end;
 
-  tempHeight := SpaceY;
-  tempWidth := DList^.width;
+procedure DrawProccesingLoop(var DrList: PDrawList);
+var
+  x1,y1,j: Integer;
+begin
+  if DrList^.numberOfChildren <> 0 then
+    begin
+    x1:=CurrX;
+    y1:=CurrY;
+    CurrY := CurrY + basicHeight + skipSpace;
+    for j := 0 to DrList^.numberOfChildren-1 do
+      DrawProccesingRec(DrList^.children[j], indentX);
+    indentY := CurrY - Y1;
+    CurrY := CurrY + basicHeight + skipSpace;
+    DrawLoop(pbBox,x1,y1,basicWidth,basicHeight,indentY);
+    drawLine(pbBox, X1+Round(basicWidth/2), Y1+basicHeight, X1+Round(basicWidth/2), Y1+basicHeight+skipSpace);
+    drawLine(pbBox, X1+Round(basicWidth/2), Y1+basicHeight+indentY, X1+Round(basicWidth/2), Y1+basicHeight+skipSpace+indentY);
+    end;
+end;
 
+begin
+  if DList^.chAvailable then
+    case DList^.structure of
+      Choice: DrawProccesingChoice(DList);
+      Loop: DrawProccesingLoop(DList);
+      Block, Terminator, Another: DrawProccesingBlock(DList);
+    //  DataBlock: drawDataBlock(pbBox,x,y);
+    end
+  else
+    begin
+      X:=CurrX + indentX;
+      Y:=CurrY;
 
-  i:=1;
-  {  while i<=numberOfBlockDecl do
-      begin
-        if checkStr(DList^.caption, trim(BlockDeclNames[i])) then
-          begin
-            DrawBlock(x,y,tempSpaceX,tempSpaceY,i,DList);
-            NothingToDo := False;
-          end;
-      inc(i);
-      end;           }
+      if DList^.structure = DataBlock then
+        drawDataBlock(pbBox,X,Y,basicWidth,basicHeight,0)
+      else
+        drawFunctionalBlock(pbBox,X,Y,basicWidth,basicHeight,0);
+      drawLine(pbBox, X+Round(basicWidth/2), Y+basicHeight, X+Round(basicWidth/2), Y+basicHeight+skipSpace);
 
-  case DList^.structure of
-    Terminator: drawTerminator(pbBox,x,y,tempWidth,DList^.height, tempHeight);
-    Choice: drawBinaryChoice(pbBox,x,y,tempWidth,DList^.height,tempHeight);
-    DataBlock: drawDataBlock(pbBox,x,y,tempWidth,DList^.height,tempHeight);
-    Loop: drawLoop(pbBox,x,y,tempWidth,DList^.height,tempHeight);
-    Block: drawFunctionalBlock(pbBox,x,y,tempWidth,DList^.height,tempHeight);
-   end;
-
-  SpaceY := SpaceY + DList^.height + skipSpace;
+      CurrY := CurrY + basicHeight + skipSpace;
+    end;
 end;
 
 begin
   CurrX := 100;
   CurrY := 50;
-  x:=0;
-  y:=0;
+  indentX:=0;
   if DrawList^.numberOfChildren <> 0 then
     for k := 0 to DrawList^.numberOfChildren-1 do
       begin
-      DrawProccesingRec(DrawList^.children[k], x, y);
-      x:=0;
-      y:=0;
-      currY := 50;
-      CurrX := CurrX + 200;
+      x:=CurrX;
+      y:=CurrY;
+      CurrY := CurrY + basicHeight + skipSpace;
+      DrawProccesingRec(DrawList^.children[k], indentX);
+      indentY := CurrY - Y;
+      DrawTerminator(pbBox,x,y,basicWidth,basicHeight,indentY);
+      drawLine(pbBox, X+Round(basicWidth/2), Y+basicHeight, X+Round(basicWidth/2), Y+basicHeight+skipSpace);
+      CurrX := CurrX + indentX + 200;
+      CurrY := 50;
       end;             ;
 end;
 
@@ -160,6 +206,7 @@ begin
   pbBox:=PaintBox;
   CreateDrawUnit(DrawList);
   FillDrawUnit(DrawList, TreeStructure);
+  HealDrawStructure(DrawList);
   drawModel(Form,paintBox);
 end;
 
