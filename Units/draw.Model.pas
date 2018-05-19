@@ -7,6 +7,9 @@ interface
        Vcl.ExtCtrls;
 
   procedure CreatingDrawModel(Form: TForm; paintBox: TPaintBox);
+  procedure FindAndBlue(x,y:integer; var a,b:Integer);
+  procedure RestoreDafault;
+  procedure EraseDrawList(var DList: PDrawList);
 
 implementation
 
@@ -25,6 +28,23 @@ begin
 //  DrawUnit^.next := nil;
   DrawUnit^.branch := nil;
   DrawUnit^.structure := Another;
+  DrawUnit^.x := -1000;
+  DrawUnit^.y := -1000;
+  DrawUnit^.color := clBlack;
+  DrawUnit^.Space := 0;
+end;
+
+procedure EraseDrawList(var DList: PDrawList);
+var
+  i: integer;
+begin
+  i:=0;
+  while i <= DList^.NumberOfChildren - 1 do
+    begin
+      EraseDrawList(DList^.Children[i]);
+      Inc(i);
+    end;
+  Dispose(DList);
 end;
 
 procedure DeclStruct(var Structure: TStructuresList; i: integer);
@@ -97,6 +117,52 @@ begin
   drawModel(paintBox.Canvas, tempWidth, tempHeight);
   paintBox.Width := tempWidth;
   paintBox.Height := tempHeight;
+end;
+
+procedure RestoreDafault();
+
+procedure RestoreDefaultRec(var DList:PDrawList);
+var
+  k:Integer;
+begin
+  K:=0;
+  if DList^.chAvailable then
+    while  k <= DList^.NumberOfChildren-1 do
+    begin
+      RestoreDefaultRec(DList^.children[k]);
+      Inc(k);
+    end;
+  Dlist^.color := clBlack;
+end;
+
+begin
+  RestoreDefaultRec(DrawList);
+end;
+
+procedure FindAndBlue(x,y:integer; var a,b:Integer);
+
+procedure FindAndBlueDrawList(var DList:PDrawList; x,y:integer);
+var
+  k:Integer;
+begin
+  K:=0;
+  if DList^.chAvailable then
+    while  k <= DList^.NumberOfChildren-1 do
+    begin
+      FindAndBlueDrawList(DList^.children[k], x, y);
+      Inc(k);
+    end;
+
+  if (x >= DList^.x) and (x<= Dlist^.x + basicWidth) and (((y>= Dlist^.y) and (y<= Dlist^.y + basicHeight)) or
+  (y>= Dlist^.y + Dlist^.space) and (y<= Dlist^.y + Dlist^.space + basicHeight))  then
+    begin
+      Dlist^.color := clBlue;
+      a:=DList^.branch^.DeclarationLine;
+      b:=DList^.branch^.EndLine;
+    end;
+end;
+begin
+  FindAndBlueDrawList(DrawList,x,y);
 end;
 
 

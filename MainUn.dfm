@@ -2,7 +2,7 @@ object Flowchart_Manager: TFlowchart_Manager
   Left = 0
   Top = 0
   Caption = 'Flowchart_Manager'
-  ClientHeight = 370
+  ClientHeight = 431
   ClientWidth = 958
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -19,7 +19,7 @@ object Flowchart_Manager: TFlowchart_Manager
     Left = 0
     Top = 0
     Width = 361
-    Height = 370
+    Height = 431
     Align = alLeft
     TabOrder = 0
     object splMemoTree: TSplitter
@@ -42,30 +42,39 @@ object Flowchart_Manager: TFlowchart_Manager
         03010000001E0000000000000000000000FFFFFFFFFFFFFFFF00000000000000
         00000000000100}
     end
-    object mmoMainMemo: TMemo
-      Left = 1
-      Top = 237
-      Width = 359
-      Height = 132
-      Align = alClient
-      ScrollBars = ssVertical
-      TabOrder = 1
-    end
     object btnTemp: TButton
       Left = 280
       Top = 206
       Width = 75
       Height = 25
       Caption = 'Test'
-      TabOrder = 2
+      TabOrder = 1
       OnClick = btnTempClick
+    end
+    object reMainEdit: TRichEdit
+      Left = 1
+      Top = 237
+      Width = 359
+      Height = 193
+      Align = alClient
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      Lines.Strings = (
+        '')
+      ParentFont = False
+      ScrollBars = ssVertical
+      TabOrder = 2
+      Zoom = 100
     end
   end
   object scrMain: TScrollBox
     Left = 361
     Top = 0
     Width = 597
-    Height = 370
+    Height = 431
     HorzScrollBar.ButtonSize = 10
     VertScrollBar.ButtonSize = 20
     VertScrollBar.ParentColor = False
@@ -79,11 +88,12 @@ object Flowchart_Manager: TFlowchart_Manager
       Top = 0
       Width = 0
       Height = 0
+      OnMouseDown = pbMainMouseDown
       OnPaint = pbMainPaint
     end
     object mmoInput: TMemo
       Left = 496
-      Top = 320
+      Top = 399
       Width = 98
       Height = 49
       Font.Charset = DEFAULT_CHARSET

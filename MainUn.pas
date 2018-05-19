@@ -12,7 +12,6 @@ type
   TFlowchart_Manager = class(TForm)
     pnlMemoTree: TPanel;
     trMainTree: TTreeView;
-    mmoMainMemo: TMemo;
     splMemoTree: TSplitter;
     MainMenu: TMainMenu;
     scrMain: TScrollBox;
@@ -29,6 +28,7 @@ type
     btnTemp: TButton;
     dlgSaveFlowchart: TSaveDialog;
     mmoInput: TMemo;
+    reMainEdit: TRichEdit;
     procedure StartRoutine();
     procedure createtree();
     procedure FormDestroy(Sender: TObject);
@@ -46,6 +46,9 @@ type
     procedure saveBMPFile;
     procedure fileSavePNGExecute(Sender: TObject);
     procedure fileSaveBMPExecute(Sender: TObject);
+    procedure pbMainMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+
   private
     { Private declarations }
   public
@@ -69,13 +72,48 @@ begin
 strList.Free;
 if TreeStructure <> nil then
   EraseTree(TreeStructure);
+if DrawList <> nil then
+  EraseDrawList(DrawList);
+end;
+
+procedure TFlowchart_Manager.pbMainMouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+var
+  a,b, temp:integer;
+  i: Integer;
+begin
+  RestoreDafault();
+  reMainEdit.SelStart:=0;
+  reMainEdit.SelLength:=0;
+  for i := 0 to reMainEdit.Lines.Count - 1 do
+    begin
+      reMainEdit.SelLength:=reMainEdit.SelLength + Length(reMainEdit.Lines[i]);
+    end;
+  reMainEdit.SelAttributes.Color := clBlack;
+
+  a:=-1;
+  b:=-1;
+  FindAndBlue(X,Y,a,b);
+  temp:=0;
+  for i := 0 to a-1 do
+    begin
+      temp:=temp+length(reMainEdit.Lines[i]);
+    end;
+  reMainEdit.SelStart:=temp;
+  reMainEdit.SelLength:=0;
+  for i := a to b do
+    begin
+      reMainEdit.SelLength:=reMainEdit.SelLength + Length(reMainEdit.Lines[i]);
+    end;
+  reMainEdit.SelAttributes.Color := clBlue;
+
+  pbMain.Repaint;
 end;
 
 procedure TFlowchart_Manager.pbMainPaint(Sender: TObject);
 begin
   if DrawList <> nil then
     screenUpdate(Flowchart_Manager,pbMain);
-
 end;
 
 procedure TFlowchart_Manager.RecTreeConstructor(const shift: Integer; TempTreeStructure: PTreeStructure);
@@ -94,10 +132,8 @@ begin
       tempI := CurrentMaxNode;
       RecTreeConstructor(tempI, TempTreeStructure^.Children[i-1]);
       end;
-
     inc(i);
     end;
-
 end;
 
 procedure TFlowchart_Manager.scrMainMouseWheelUp(Sender: TObject;
@@ -131,20 +167,25 @@ end;
 
 procedure TFlowchart_Manager.fileOpenExecute(Sender: TObject);
 begin
+
+  dlgOpenFile.Filter := 'Pascal files (*.pas, *.dpr)|*.PAS;*.DPR| Text files (*.txt)|*.TXT|';
   if dlgOpenFile.Execute then
+  begin
     CurrentFile := dlgOpenFile.FileName;
-  clearScreen(Flowchart_Manager,pbMain);
-  TreeStructure := nil;
-  StartRoutine();
-  CreatingDataModel();
-  createtree;
+    clearScreen(Flowchart_Manager,pbMain);
+    TreeStructure := nil;
+    StartRoutine();
 
-  clearScreen(Flowchart_Manager,pbMain);
-  if TreeStructure <> nil then
-    CreatingDrawModel(Flowchart_Manager, pbMain);
+    CreatingDataModel();
+    createtree;
 
-  fileSavePNG.Enabled:=true;
-  fileSaveBMP.Enabled:=true;
+    clearScreen(Flowchart_Manager,pbMain);
+    if TreeStructure <> nil then
+      CreatingDrawModel(Flowchart_Manager, pbMain);
+
+    fileSavePNG.Enabled:=true;
+    fileSaveBMP.Enabled:=true;
+  end;
 end;
 
 procedure TFlowchart_Manager.fileSaveBMPExecute(Sender: TObject);
@@ -158,12 +199,13 @@ begin
 end;
 
 procedure TFlowchart_Manager.StartRoutine();
-var   S:string;
+var
+  S,tmpS:string;
+  Posit:Integer;
 begin
-mmoMainMemo.Lines.Clear;
-
+reMainEdit.Lines.Clear;
 if FileExists(currentFile) then
-  mmoMainMemo.Lines. LoadFromFile(currentFile);
+  reMainEdit.Lines. LoadFromFile(currentFile);
 
 AssignFile(FileUsed, currentFile);
 Reset(FileUsed);
@@ -175,7 +217,29 @@ StrList.Duplicates:=dupAccept;
 while not Eof(FileUsed) do
   begin
   Readln(FileUsed, S);
-  StrList.Add(S)
+  if checkStr(S,'exit') or checkStr(S,'break') or checkStr(S,'continue') or checkStr(S,'case')then
+    begin
+    ShowMessage('Warning! Non-structural algorithm');
+    end;
+  Posit:=AnsiPos('//', S);
+  Delete(S,Posit,length(s)-Posit+1);
+
+  if AnsiPos('{', S) <> 0 then
+    begin
+      Posit:=AnsiPos('{', S);
+      Delete(S,Posit,length(s)-Posit+1);
+      StrList.Add(S);
+      repeat
+      Readln(FileUsed,S)
+      until  (AnsiPos('', S) = 0) or Eof(FileUsed);
+      Posit:=AnsiPos('', S);
+      Delete(S,1,Posit);
+    end;
+
+  Posit:=AnsiPos('//', S);
+  Delete(S,Posit,length(s)-Posit+1);
+
+  StrList.Add(S);
   end;
 
 CloseFile(FileUsed);

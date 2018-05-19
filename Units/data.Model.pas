@@ -261,6 +261,7 @@ if checkStr(Str, 'procedure') or checkStr(Str,'function')  then  skipToAfterFP(C
   else
     NextTreeNode^.EndLine := CurrentLine-1;
   CurrentTreeNode^.Children[CurrentTreeNode^.NumberOfChildren - 1] := NextTreeNode;
+
 end;
 
 procedure checkBegin(const Str: string; var CurrentTreeNode: PTreeStructure);
@@ -320,38 +321,50 @@ begin
 
 
     checkBegin(StrList[CurrentLine], CurrentTreeNode);
-    if DT1 then
-      begin
-      //if checkTrueEnd(StrList[CurrentLine], CurrentTreeNode, DT1) then
-      if checkStr(StrList[CurrentLine], 'end') or checkStr(StrList[CurrentLine], 'end.') then
-        begin
-        canILeave := True;
-        Dec(DT1);
-        end
-      else
-        Inc(CurrentLine);
-      end
+    if checkStr(CurrentTreeNode^.BlockName,'if') and (CurrentTreeNode^.NumberOfChildren = 3) then
+      canILeave:=True
     else
       begin
-      if DT2 then
+
+      if DT1 then
         begin
-        if checkStr(StrList[CurrentLine],'until') then
+        //if checkTrueEnd(StrList[CurrentLine], CurrentTreeNode, DT1) then
+        if checkStr(StrList[CurrentLine], 'end') or checkStr(StrList[CurrentLine], 'end.') then
           begin
           canILeave := True;
-          Dec(DT2);
-          end;
-        Inc(CurrentLine);
-        end
+          Dec(DT1);
+          end
         else
-        begin
-        if CurrentLine = StrList.Count-1 then
-          CanILeave := True
-        else
-          begin
-          if not DT1 and not DT2 and not(checkStr(StrList[CurrentLine+1], 'else')) then
-            if checkEnd(StrList[CurrentLine], CurrentTreeNode)then
-              CanILeave := True;
           Inc(CurrentLine);
+        end
+      else
+        begin
+        if DT2 then
+          begin
+          if checkStr(StrList[CurrentLine],'until') then
+            begin
+            canILeave := True;
+            Dec(DT2);
+            end;
+          Inc(CurrentLine);
+          end
+          else
+          begin
+          if CurrentLine = StrList.Count-1 then
+            CanILeave := True
+          else
+            begin
+            if not(checkStr(StrList[CurrentLine+1], 'else')) then
+              begin
+              if checkEnd(StrList[CurrentLine], CurrentTreeNode)then
+                CanILeave := True;
+              end;
+
+              Inc(CurrentLine);
+              if (checkStr(StrList[CurrentLine], 'else')) then
+                CanILeave := True;
+
+            end;
           end;
         end;
       end;

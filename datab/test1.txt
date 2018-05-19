@@ -1,37 +1,21 @@
-procedure SortStr(Size: integer; var SA: TMasRe);
-var t,i,steps,j,m:integer;
-    tmp:TRecord;
+procedure print(QA: TQueensArr);
+var
+   i,j:integer;
 begin
-  t := Trunc(Ln(Size) / Ln(2)) - 1;
-  for i:=1 to t do
+  Writeln('Number ', Num);
+  for i:=1 to N do
   begin
-	if true then
-	begin
-        SA[M+steps] := SA[m];
-	if kek then
-		begin
-		kek;
-		lol
-		end
-		else
-		begin
-		kek;
-		lol;
-		end;
-	end;
-	else
-	begin
-        m:=m-steps;
-	end;
-	if kek then
-		begin
-		kek;
-		lol
-		end
-		else
-		begin
-		kek;
-		lol;
-		end;
+    if (Queen[i] = j) then
+      for i:=1 to N do
+      begin
+      write('Q')
+      end
+    else
+      for i:=1 to N do
+      begin
+      write('Q')
+      end;
   end;
+  writeln;
+  Inc(num);
 end;
