@@ -6,16 +6,16 @@ interface
        Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.StdCtrls, Vcl.ComCtrls,
        Vcl.ExtCtrls, System.Actions, Vcl.ActnList;
 
-  procedure drawTerminator(Canv:TCanvas; x,y,width,height,space:Integer);
-  procedure drawFunctionalBlock(Canv:TCanvas; x,y,width,height,space:Integer);
-  procedure drawBinaryChoice(Canv:TCanvas; x,y,width,height,space:Integer);
-  procedure drawDataBlock(Canv:TCanvas; x,y,width,height,space:Integer);
-  procedure drawLoop(Canv:TCanvas; x,y,width,height, space:Integer);
+  procedure drawTerminator(Canv:TCanvas; x,y,width,height, space:Integer; caption:string);
+  procedure drawFunctionalBlock(Canv:TCanvas; x,y,width,height,space:Integer; caption:string);
+  procedure drawBinaryChoice(Canv:TCanvas; x,y,width,height,space:Integer; caption:string);
+  procedure drawDataBlock(Canv:TCanvas; x,y,width,height,space:Integer; caption:string);
+  procedure drawLoop(Canv:TCanvas; x,y,width,height, space:Integer; caption:string);
   procedure drawLine(Canv:TCanvas; x1,y1,x2,y2:Integer);
 
 implementation
 
-procedure drawTerminator(Canv:TCanvas; x,y,width,height, space:Integer);
+procedure drawTerminator(Canv:TCanvas; x,y,width,height, space:Integer; caption:string);
 var R:Integer;
 begin
   R:=round(height/2);
@@ -27,6 +27,8 @@ begin
       LineTo(x+width-r,y);
       MoveTo(x+r,y+height);
       LineTo(x+width-r,y+height);
+      TextOut((x + Width div 2)-(canv.TextWidth('begin') div 2), y+(height div 2)-20, 'begin');
+      TextOut((x + Width div 2)-(canv.TextWidth(caption) div 2), y+(height div 2)-10, caption);
     end;
   y := y+space;
   with Canv do
@@ -37,10 +39,11 @@ begin
       LineTo(x+width-r,y);
       MoveTo(x+r,y+height);
       LineTo(x+width-r,y+height);
+      TextOut((x + Width div 2)-(canv.TextWidth('end') div 2), y+(height div 2)-10, 'end');
     end;
 end;
 
-procedure drawFunctionalBlock(Canv:TCanvas; x,y,width,height, space:Integer);
+procedure drawFunctionalBlock(Canv:TCanvas; x,y,width,height, space:Integer; caption:string);
 begin
   y := y+space;
   with Canv do
@@ -50,10 +53,11 @@ begin
       LineTo(x+width,y+height);
       LineTo(x,y+height);
       LineTo(x,y);
+      TextOut((x + Width div 2)-(canv.TextWidth(caption) div 2), y+(height div 2)-10, caption);
     end;
 end;
 
-procedure drawBinaryChoice(Canv:TCanvas; x,y,width,height,space:Integer);
+procedure drawBinaryChoice(Canv:TCanvas; x,y,width,height,space:Integer; caption:string);
 var R1,R2:Integer;
 begin
   R1:=Round(height/2);
@@ -65,10 +69,14 @@ begin
       LineTo(x+R2,y+height);
       LineTo(x,y+R1);
       LineTo(x+R2,y);
+//      TextOut((x + Width div 2)-(canv.TextWidth(caption) div 2), y+(height div 2)-10, caption);
+      TextOut((x + Width div 2)-(canv.TextWidth('If') div 2), y+(height div 2)-10, 'If');
+      TextOut(x-(canv.TextWidth('Yes') div 2), y+height+20, 'Yes');
+      TextOut(x+width+20-(canv.TextWidth('No') div 2), y, 'No');
     end;
 end;
 
-procedure drawDataBlock(Canv:TCanvas; x,y,width,height,space:Integer);
+procedure drawDataBlock(Canv:TCanvas; x,y,width,height,space:Integer; caption:string);
 var R:Integer;
 begin
   y := y+space;
@@ -80,10 +88,11 @@ begin
       LineTo(x+width-R,y+height);
       LineTo(x,y+height);
       LineTo(x+R,y);
+      TextOut((x + Width div 2)-(canv.TextWidth(caption) div 2), y+(height div 2)-10, caption);
     end;
 end;
 
-procedure drawLoop(Canv:TCanvas; x,y,width,height, space:Integer);
+procedure drawLoop(Canv:TCanvas; x,y,width,height, space:Integer; caption:string);
 var R1,R2:Integer;
 begin
   R1:=Round(height/4);
@@ -97,6 +106,8 @@ begin
       LineTo(x,y+height);
       LineTo(x,y+R1);
       LineTo(x+R2,y);
+      TextOut((x + Width div 2)-(canv.TextWidth('start loop') div 2), y+(height div 2)-40, 'start loop');
+//      TextOut((x + Width div 2)-(canv.TextWidth(caption) div 2), y+(height div 2), caption);
     end;
   y:= y + space;
   with Canv do
@@ -108,6 +119,7 @@ begin
       LineTo(x+R2,y+height);
       LineTo(x,y+height-R1);
       LineTo(x,y);
+      TextOut((x + Width div 2)-(canv.TextWidth('end loop') div 2), y+(height div 2)+10, 'end loop');
     end;
 end;
 

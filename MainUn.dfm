@@ -2,7 +2,7 @@ object Flowchart_Manager: TFlowchart_Manager
   Left = 0
   Top = 0
   Caption = 'Flowchart_Manager'
-  ClientHeight = 390
+  ClientHeight = 370
   ClientWidth = 958
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -19,7 +19,7 @@ object Flowchart_Manager: TFlowchart_Manager
     Left = 0
     Top = 0
     Width = 361
-    Height = 390
+    Height = 370
     Align = alLeft
     TabOrder = 0
     object splMemoTree: TSplitter
@@ -46,7 +46,7 @@ object Flowchart_Manager: TFlowchart_Manager
       Left = 1
       Top = 237
       Width = 359
-      Height = 152
+      Height = 132
       Align = alClient
       ScrollBars = ssVertical
       TabOrder = 1
@@ -65,13 +65,14 @@ object Flowchart_Manager: TFlowchart_Manager
     Left = 361
     Top = 0
     Width = 597
-    Height = 390
+    Height = 370
     HorzScrollBar.ButtonSize = 10
     VertScrollBar.ButtonSize = 20
     VertScrollBar.ParentColor = False
     Align = alClient
     BorderStyle = bsNone
     TabOrder = 1
+    OnMouseWheelDown = scrMainMouseWheelDown
     OnMouseWheelUp = scrMainMouseWheelUp
     object pbMain: TPaintBox
       Left = 5
@@ -80,33 +81,46 @@ object Flowchart_Manager: TFlowchart_Manager
       Height = 0
       OnPaint = pbMainPaint
     end
+    object mmoInput: TMemo
+      Left = 496
+      Top = 320
+      Width = 98
+      Height = 49
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -8
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 0
+      Visible = False
+    end
   end
   object MainMenu: TMainMenu
-    Left = 280
+    Left = 256
     Top = 8
     object File1: TMenuItem
       Caption = 'File'
-      object Open1: TMenuItem
+      object fileOpen1: TMenuItem
         Action = fileOpen
         Caption = 'Open'
       end
-      object fileOpen1: TMenuItem
-        Action = fileSave
+      object fileSavePNG1: TMenuItem
+        Action = fileSavePNG
         Caption = 'Save PNG'
       end
-      object fileSaveAs1: TMenuItem
-        Action = fileSaveAs
-        Caption = 'Save As'
-        Visible = False
+      object fileSaveBMP1: TMenuItem
+        Action = fileSaveBMP
+        Caption = 'Save BMP'
       end
     end
   end
   object dlgOpenFile: TOpenDialog
-    Left = 320
+    Left = 312
     Top = 8
   end
   object alMain: TActionList
-    Left = 240
+    Left = 200
     Top = 8
     object fileOpen: TAction
       Category = 'File'
@@ -114,21 +128,23 @@ object Flowchart_Manager: TFlowchart_Manager
       ShortCut = 16463
       OnExecute = fileOpenExecute
     end
-    object fileSave: TAction
+    object fileSavePNG: TAction
       Category = 'File'
       Caption = 'fileSave'
       Enabled = False
       ShortCut = 16467
-      OnExecute = fileSaveExecute
+      OnExecute = fileSavePNGExecute
     end
-    object fileSaveAs: TAction
+    object fileSaveBMP: TAction
       Category = 'File'
-      Caption = 'fileSaveAs'
+      Caption = 'fileSaveBMP'
+      Enabled = False
       ShortCut = 49235
+      OnExecute = fileSaveBMPExecute
     end
   end
   object dlgSaveFlowchart: TSaveDialog
-    Left = 320
+    Left = 312
     Top = 56
   end
 end

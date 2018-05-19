@@ -20,14 +20,15 @@ type
     dlgOpenFile: TOpenDialog;
     alMain: TActionList;
     fileOpen: TAction;
-    fileSave: TAction;
-    fileSaveAs: TAction;
+    fileSavePNG: TAction;
+    fileSaveBMP: TAction;
     File1: TMenuItem;
-    Open1: TMenuItem;
     fileOpen1: TMenuItem;
-    fileSaveAs1: TMenuItem;
+    fileSavePNG1: TMenuItem;
+    fileSaveBMP1: TMenuItem;
     btnTemp: TButton;
     dlgSaveFlowchart: TSaveDialog;
+    mmoInput: TMemo;
     procedure StartRoutine();
     procedure createtree();
     procedure FormDestroy(Sender: TObject);
@@ -36,10 +37,15 @@ type
     procedure pbMainPaint(Sender: TObject);
     procedure scrMainMouseWheelUp(Sender: TObject; Shift: TShiftState;
       MousePos: TPoint; var Handled: Boolean);
+    procedure scrMainMouseWheelDown(Sender: TObject; Shift: TShiftState;
+      MousePos: TPoint; var Handled: Boolean);
     procedure fileOpenExecute(Sender: TObject);
     function saveFile(mode: TFileMode):string;
+
     procedure savePNGFile;
-    procedure fileSaveExecute(Sender: TObject);
+    procedure saveBMPFile;
+    procedure fileSavePNGExecute(Sender: TObject);
+    procedure fileSaveBMPExecute(Sender: TObject);
   private
     { Private declarations }
   public
@@ -76,7 +82,6 @@ procedure TFlowchart_Manager.RecTreeConstructor(const shift: Integer; TempTreeSt
 var
   i: Integer;
   tempI: Integer;
-  tempShift: Integer;
 begin
   i := 1;
   while i <= TempTreeStructure^.NumberOfChildren do
@@ -101,6 +106,12 @@ begin
   (Sender as TScrollBox).VertScrollBar.Position := (Sender as TScrollBox).VertScrollBar.Position - (Sender as TScrollBox).VertScrollBar.Increment;
 end;
 
+procedure TFlowchart_Manager.scrMainMouseWheelDown(Sender: TObject;
+  Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
+begin
+  (Sender as TScrollBox).VertScrollBar.Position := (Sender as TScrollBox).VertScrollBar.Position + (Sender as TScrollBox).VertScrollBar.Increment;
+end;
+
 procedure TFlowchart_Manager.btnTempClick(Sender: TObject);
 begin
 //  drawTerminator(pbMain,50,50,100,50);
@@ -108,15 +119,9 @@ begin
 //  drawBinaryChoice(pbMain,50,50,100,50);
 //  drawLoop(pbMain,50,50,100,50,400)
 //  drawDataBlock(pbMain,50,50,100,50);
-  clearScreen(Flowchart_Manager,pbMain);
-  if TreeStructure <> nil then
-    CreatingDrawModel(Flowchart_Manager, pbMain);
-  fileSave.Enabled:=true;
 end;
 
 procedure TFlowchart_Manager.CreateTree();
-var
-  i: Integer;
 begin
 trMainTree.Items.Clear;
 trMainTree.Items.Add(nil, StrList[0]);
@@ -134,10 +139,20 @@ begin
   CreatingDataModel();
   createtree;
 
-  fileSave.Enabled:=false;
+  clearScreen(Flowchart_Manager,pbMain);
+  if TreeStructure <> nil then
+    CreatingDrawModel(Flowchart_Manager, pbMain);
+
+  fileSavePNG.Enabled:=true;
+  fileSaveBMP.Enabled:=true;
 end;
 
-procedure TFlowchart_Manager.fileSaveExecute(Sender: TObject);
+procedure TFlowchart_Manager.fileSaveBMPExecute(Sender: TObject);
+begin
+  saveBMPFile;
+end;
+
+procedure TFlowchart_Manager.fileSavePNGExecute(Sender: TObject);
 begin
   savePNGFile;
 end;
@@ -194,6 +209,36 @@ begin
     Result := dlgSaveFlowchart.FileName;
   end;
 
+end;
+
+procedure TFlowchart_Manager.saveBMPFile;
+var
+  path: string;
+  oldScale: real;
+  tempWidth, tempHeight: Integer;
+const
+  ExportScale = 4;
+begin
+//  oldScale := FScale;
+  path := saveFile(FBmp);
+  if path <> '' then
+  begin
+ //   ClickFigure := nil;
+    with TBitMap.Create do
+    begin
+      Height := maxBit;
+      Width := maxBit;
+//      FScale := ExportScale;
+      tempWidth := 0;
+      tempHeight := 0;
+      drawModel(Canvas, tempWidth, tempHeight);
+      Width := tempWidth;
+      Height := tempHeight;
+//      FScale := oldScale;
+      SaveToFile(path);
+      free;
+    end;
+  end;
 end;
 
 procedure TFlowchart_Manager.savePNGFile;

@@ -13,54 +13,54 @@ implementation
 const
     Tabu = 50;
 
-procedure drawAndFixTerminator(Canv:TCanvas; x,y,width,height, space:Integer; var canvWidth, canvHeigth:integer );
+procedure drawAndFixTerminator(Canv:TCanvas; x,y,width,height, space:Integer; var canvWidth, canvHeigth:integer; caption:string);
 begin
   if canvWidth < x+width+tabu then
     canvWidth := x+width+tabu;
   if canvHeigth < y+height+space+tabu then
     canvHeigth := y+height+space+tabu;
 
-  drawTerminator(Canv,x,y,width,height,space);
+  drawTerminator(Canv,x,y,width,height,space,caption);
 end;
 
-procedure drawAndFixFunctionalBlock(Canv:TCanvas; x,y,width,height, space:Integer; var canvWidth, canvHeigth:integer);
+procedure drawAndFixFunctionalBlock(Canv:TCanvas; x,y,width,height, space:Integer; var canvWidth, canvHeigth:Integer; caption:string);
 begin
   if canvWidth < x+width+tabu then
     canvWidth := x+width+tabu;
   if canvHeigth < y+height+tabu then
     canvHeigth := y+height+tabu;
 
-  drawFunctionalBlock(Canv,x,y,width,height,space)
+  drawFunctionalBlock(Canv,x,y,width,height,space,caption)
 end;
 
-procedure drawAndFixBinaryChoice(Canv:TCanvas; x,y,width,height,space:Integer; var canvWidth, canvHeigth:integer);
+procedure drawAndFixBinaryChoice(Canv:TCanvas; x,y,width,height,space:Integer; var canvWidth, canvHeigth:integer; caption:string);
 begin
   if canvWidth < x+width+tabu then
     canvWidth := x+width+tabu;
   if canvHeigth < y+height+tabu then
     canvHeigth := y+height+tabu;
 
-  drawBinaryChoice(Canv,x,y,width,height,space)
+  drawBinaryChoice(Canv,x,y,width,height,space,caption)
 end;
 
-procedure drawAndFixDataBlock(Canv:TCanvas; x,y,width,height,space:Integer; var canvWidth, canvHeigth:integer);
+procedure drawAndFixDataBlock(Canv:TCanvas; x,y,width,height,space:Integer; var canvWidth, canvHeigth:integer; caption: string);
 begin
   if canvWidth < x+width+tabu then
     canvWidth := x+width+tabu;
   if canvHeigth < y+height+tabu then
     canvHeigth := y+height+tabu;
 
-  drawDataBlock(Canv,x,y,width,height,space)
+  drawDataBlock(Canv,x,y,width,height,space,caption)
 end;
 
-procedure drawAndFixLoop(Canv:TCanvas; x,y,width,height, space:Integer; var canvWidth, canvHeigth:integer);
+procedure drawAndFixLoop(Canv:TCanvas; x,y,width,height, space:Integer; var canvWidth, canvHeigth:integer; caption: string);
 begin
   if canvWidth < x+width+tabu then
     canvWidth := x+width+tabu;
   if canvHeigth < y+2*height+space+tabu then
     canvHeigth := y+2*height+space+tabu;
 
-  drawLoop(Canv,x,y,width,height,space);
+  drawLoop(Canv,x,y,width,height,space,caption);
 end;
 
 procedure drawAndFixLine(Canv:TCanvas; x1,y1,x2,y2:Integer; var canvWidth, canvHeigth:integer);
@@ -79,9 +79,10 @@ end;
 
 procedure drawModel(canvas:TCanvas; var canvWidth, canvHeigth:integer);
 const
-  skipSpace = 50;
-  basicHeight = 50;
-  basicWidth = 100;
+  skipSpaceY = 100;
+  skipSpaceX = 200;
+  basicHeight = 100;
+  basicWidth = 200;
 var
   k: Integer;
   x, y: Integer;
@@ -113,22 +114,20 @@ begin
     kekIndentY:=0;
     x1:=CurrX;
     y1:=CurrY;
-    CurrY := CurrY + basicHeight + skipSpace;
+    CurrY := CurrY + basicHeight + skipSpaceY;
     DrawProccesingRec(DrList^.children[0], kekIndentX);
-
-
-    drawAndFixBinaryChoice(Canvas,x1,y1,basicWidth,basicHeight,indentY,canvWidth, canvHeigth);
+    drawAndFixBinaryChoice(Canvas,x1,y1,basicWidth,basicHeight,indentY,canvWidth,canvHeigth,DrList^.caption);
 
     if DrList^.numberOfChildren > 1 then
       begin
       tempY := CurrY;
       tempIndent := CurrX;
-      iX := skipSpace + basicWidth + kekIndentX;
-      CurrY := y1 + basicHeight + skipSpace;
+      iX := skipSpaceX + basicWidth + kekIndentX;
+      CurrY := y1 + basicHeight + skipSpaceY;
       CurrX := x1 + iX;
       if CurrX > maxX then
         maxX:=CurrX;
-      drawAndFixLine(Canvas, X1+basicWidth, Y1+Round(basicHeight/2), CurrX +Round(basicWidth/2), Y1+basicHeight+skipSpace, canvWidth, canvHeigth);
+      drawAndFixLine(Canvas,X1+basicWidth,Y1+Round(basicHeight/2),CurrX +Round(basicWidth/2),Y1+basicHeight+skipSpaceY,canvWidth,canvHeigth);
       kekIndentX:=0;
       DrawProccesingRec(DrList^.children[2], kekIndentX);
       if tempY > CurrY then
@@ -143,18 +142,18 @@ begin
         end;
 
       CurrX := tempIndent;
-      CurrY := CurrY + skipSpace;
+      CurrY := CurrY + skipSpaceY;
       end
     else
       begin
       tempY := CurrY;
       tempIndent := CurrX;
-      iX := skipSpace + basicWidth + kekIndentX;
-      CurrY := y1 + basicHeight + skipSpace;
+      iX := skipSpaceX + basicWidth + kekIndentX;
+      CurrY := y1 + basicHeight + skipSpaceY;
       CurrX := x1 + iX;
       if CurrX > maxX then
         maxX:=CurrX;
-      drawAndFixLine(Canvas, X1+basicWidth, Y1+Round(basicHeight/2), CurrX +Round(basicWidth/2), Y1+basicHeight+skipSpace, canvWidth, canvHeigth);
+      drawAndFixLine(Canvas, X1+basicWidth, Y1+Round(basicHeight/2), CurrX +Round(basicWidth/2), Y1+basicHeight+skipSpaceY, canvWidth, canvHeigth);
       if tempY > CurrY then
         begin
         drawAndFixLine(Canvas, CurrX+Round(basicWidth/2), CurrY, tempIndent+Round(basicWidth/2), tempY, canvWidth, canvHeigth);
@@ -165,14 +164,14 @@ begin
         drawAndFixLine(Canvas, CurrX+Round(basicWidth/2), CurrY, tempIndent+Round(basicWidth/2), CurrY, canvWidth, canvHeigth);
         drawAndFixLine(Canvas, tempIndent+Round(basicWidth/2), tempY, tempIndent+Round(basicWidth/2), CurrY, canvWidth,canvHeigth);
         end;
-      CurrY:=CurrY+skipSpace;
+      CurrY:=CurrY+skipSpaceY;
       CurrX := tempIndent;
       end;
-    iX := skipSpace + basicWidth;
+    iX := skipSpaceX + basicWidth;
     if CurrX > maxX then
         maxX:=CurrX;
-    drawAndFixLine(Canvas, X1+Round(basicWidth/2), Y1+basicHeight, X1+Round(basicWidth/2), Y1+basicHeight+skipSpace, canvWidth, canvHeigth);
-    drawAndFixLine(Canvas, CurrX+Round(basicWidth/2), CurrY-skipSpace, CurrX+Round(basicWidth/2), CurrY, canvWidth, canvHeigth);
+    drawAndFixLine(Canvas, X1+Round(basicWidth/2), Y1+basicHeight, X1+Round(basicWidth/2), Y1+basicHeight+skipSpaceY, canvWidth, canvHeigth);
+    drawAndFixLine(Canvas, CurrX+Round(basicWidth/2), CurrY-skipSpaceY, CurrX+Round(basicWidth/2), CurrY, canvWidth, canvHeigth);
     end;
 end;
 
@@ -184,14 +183,14 @@ begin
     begin
     x1:=CurrX;
     y1:=CurrY;
-    CurrY := CurrY + basicHeight + skipSpace;
+    CurrY := CurrY + basicHeight + skipSpaceY;
     for j := 0 to DrList^.numberOfChildren-1 do
       DrawProccesingRec(DrList^.children[j], iX);
     indentY := CurrY - Y1;
-    CurrY := CurrY + basicHeight + skipSpace;
-    DrawAndFixLoop(Canvas,x1,y1,basicWidth,basicHeight,indentY, canvWidth, canvHeigth);
-    drawAndFixLine(Canvas, X1+Round(basicWidth/2), Y1+basicHeight, X1+Round(basicWidth/2), Y1+basicHeight+skipSpace, canvWidth, canvHeigth);
-    drawAndFixLine(Canvas, X1+Round(basicWidth/2), Y1+basicHeight+indentY, X1+Round(basicWidth/2), Y1+basicHeight+skipSpace+indentY,canvWidth, canvHeigth);
+    CurrY := CurrY + basicHeight + skipSpaceY;
+    DrawAndFixLoop(Canvas,x1,y1,basicWidth,basicHeight,indentY,canvWidth,canvHeigth,DrList^.caption);
+    drawAndFixLine(Canvas, X1+Round(basicWidth/2), Y1+basicHeight, X1+Round(basicWidth/2), Y1+basicHeight+skipSpaceY, canvWidth, canvHeigth);
+    drawAndFixLine(Canvas, X1+Round(basicWidth/2), Y1+basicHeight+indentY, X1+Round(basicWidth/2), Y1+basicHeight+skipSpaceY+indentY,canvWidth, canvHeigth);
     end;
 end;
 
@@ -209,12 +208,12 @@ begin
       Y:=CurrY;
 
       if DList^.structure = DataBlock then
-        drawAndFixDataBlock(Canvas,X,Y,basicWidth,basicHeight,0, canvWidth, canvHeigth)
+        drawAndFixDataBlock(Canvas,X,Y,basicWidth,basicHeight,0,canvWidth,canvHeigth,DList^.caption)
       else
-        drawAndFixFunctionalBlock(Canvas,X,Y,basicWidth,basicHeight,0,canvWidth, canvHeigth);
-      drawAndFixLine(Canvas, X+Round(basicWidth/2), Y+basicHeight, X+Round(basicWidth/2), Y+basicHeight+skipSpace, canvWidth, canvHeigth);
+        drawAndFixFunctionalBlock(Canvas,X,Y,basicWidth,basicHeight,0,canvWidth,canvHeigth,DList^.caption);
+      drawAndFixLine(Canvas, X+Round(basicWidth/2), Y+basicHeight, X+Round(basicWidth/2), Y+basicHeight+skipSpaceY, canvWidth, canvHeigth);
 
-      CurrY := CurrY + basicHeight + skipSpace;
+      CurrY := CurrY + basicHeight + skipSpaceY;
     end;
 end;
 
@@ -229,16 +228,16 @@ begin
       begin
       x:=CurrX;
       y:=CurrY;
-      CurrY := CurrY + basicHeight + skipSpace;
+      CurrY := CurrY + basicHeight + skipSpaceY;
       DrawProccesingRec(DrawList^.children[k], indentX);
 
       indentY := CurrY - Y;
-      DrawAndFixTerminator(Canvas,x,y,basicWidth,basicHeight,indentY, canvWidth,canvHeigth);
-      drawAndFixLine(Canvas, X+Round(basicWidth/2), Y+basicHeight, X+Round(basicWidth/2), Y+basicHeight+skipSpace, canvWidth,canvHeigth);
-      CurrX := maxX + 200;
+      DrawAndFixTerminator(Canvas,x,y,basicWidth,basicHeight,indentY, canvWidth,canvHeigth,DrawList^.caption);
+      drawAndFixLine(Canvas, X+Round(basicWidth/2), Y+basicHeight, X+Round(basicWidth/2), Y+basicHeight+skipSpaceY, canvWidth,canvHeigth);
+      CurrX := maxX + skipSpaceX*2;
       maxX:=CurrX;
       CurrY := 50;
-      end;             ;
+      end;
 end;
 
 
