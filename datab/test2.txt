@@ -1,0 +1,53 @@
+kekProg;
+procedure stringBinSearch(N:Integer; elem:string; var Mas:TMasRe);
+var
+  left,right,middle,sought:integer;
+begin
+  left:=1;
+  right:=N;
+  sought:=-1;
+  while (left <= right) do
+  begin
+    middle := (left + right) div 2;
+    Mas[middle].BoolF := true;
+    if ((Mas[middle].st) = elem) then
+    begin
+      sought:= middle;
+      left := right + 1;
+    end
+    else
+    begin
+      if (Mas[middle].st > elem) then
+	begin
+        right := middle - 1
+	end
+      else
+	begin
+        left := middle +1;
+	end;
+    end;
+  end;
+  if (sought = -1) then
+	begin
+    writeln('Not found')
+	end
+  else
+	begin
+    Writeln('Element index: ' + IntToStr(sought))
+	end;
+end;
+
+function numberOfTrue(N:integer; var Mas:TMasRe):Integer;
+var
+  i,k:integer;
+begin
+  k:=0;
+  for i:= 1 to N do
+  begin
+    if (Mas[i].BoolF = True) then
+	begin
+      Inc(k);
+	end;
+  end;
+Result:=k;
+end;

@@ -13,7 +13,9 @@ interface
     numberOfBlockDecl = 9;
     BlockDeclNames: array[1..numberOfBlockDecl] of string[10] = ('procedure', 'function', 'if', 'while', 'for', 'repeat', 'begin', 'code', 'else');
 
+    maxBit = 17000;
   type
+    TFileMode  = (FBrakh, FBmp, FPng);
 
     PTreeStructure = ^TTreeStructure;
     TChilds = array of PTreeStructure;
@@ -48,6 +50,8 @@ interface
     TreeStructure: PTreeStructure;
     DrawList: PDrawList;
     currentFile: string;
+    FScale: Real;
+
 
 implementation
 

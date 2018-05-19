@@ -2,8 +2,8 @@ object Flowchart_Manager: TFlowchart_Manager
   Left = 0
   Top = 0
   Caption = 'Flowchart_Manager'
-  ClientHeight = 384
-  ClientWidth = 980
+  ClientHeight = 390
+  ClientWidth = 958
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,7 +19,7 @@ object Flowchart_Manager: TFlowchart_Manager
     Left = 0
     Top = 0
     Width = 361
-    Height = 384
+    Height = 390
     Align = alLeft
     TabOrder = 0
     object splMemoTree: TSplitter
@@ -46,7 +46,7 @@ object Flowchart_Manager: TFlowchart_Manager
       Left = 1
       Top = 237
       Width = 359
-      Height = 146
+      Height = 152
       Align = alClient
       ScrollBars = ssVertical
       TabOrder = 1
@@ -64,8 +64,8 @@ object Flowchart_Manager: TFlowchart_Manager
   object scrMain: TScrollBox
     Left = 361
     Top = 0
-    Width = 619
-    Height = 384
+    Width = 597
+    Height = 390
     HorzScrollBar.ButtonSize = 10
     VertScrollBar.ButtonSize = 20
     VertScrollBar.ParentColor = False
@@ -76,8 +76,8 @@ object Flowchart_Manager: TFlowchart_Manager
     object pbMain: TPaintBox
       Left = 5
       Top = 0
-      Width = 1000
-      Height = 2000
+      Width = 0
+      Height = 0
       OnPaint = pbMainPaint
     end
   end
@@ -92,11 +92,12 @@ object Flowchart_Manager: TFlowchart_Manager
       end
       object fileOpen1: TMenuItem
         Action = fileSave
-        Caption = 'Save'
+        Caption = 'Save PNG'
       end
       object fileSaveAs1: TMenuItem
         Action = fileSaveAs
         Caption = 'Save As'
+        Visible = False
       end
     end
   end
@@ -116,12 +117,18 @@ object Flowchart_Manager: TFlowchart_Manager
     object fileSave: TAction
       Category = 'File'
       Caption = 'fileSave'
+      Enabled = False
       ShortCut = 16467
+      OnExecute = fileSaveExecute
     end
     object fileSaveAs: TAction
       Category = 'File'
       Caption = 'fileSaveAs'
       ShortCut = 49235
     end
+  end
+  object dlgSaveFlowchart: TSaveDialog
+    Left = 320
+    Top = 56
   end
 end

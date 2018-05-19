@@ -1,0 +1,37 @@
+procedure SortStr(Size: integer; var SA: TMasRe);
+var t,i,steps,j,m:integer;
+    tmp:TRecord;
+begin
+  t := Trunc(Ln(Size) / Ln(2)) - 1;
+  for i:=1 to t do
+  begin
+	if true then
+	begin
+        SA[M+steps] := SA[m];
+	if kek then
+		begin
+		kek;
+		lol
+		end
+		else
+		begin
+		kek;
+		lol;
+		end;
+	end;
+	else
+	begin
+        m:=m-steps;
+	end;
+	if kek then
+		begin
+		kek;
+		lol
+		end
+		else
+		begin
+		kek;
+		lol;
+		end;
+  end;
+end;

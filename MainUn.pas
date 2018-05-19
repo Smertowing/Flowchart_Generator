@@ -3,10 +3,10 @@ unit MainUn;
 interface
 
 uses
-  TypesAndVars, data.Model, draw.Structures, draw.Model, Screen,
+  TypesAndVars, data.Model, draw.Structures, draw.Model, View, Screen,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.StdCtrls, Vcl.ComCtrls,
-  Vcl.ExtCtrls, System.Actions, Vcl.ActnList;
+  Vcl.ExtCtrls, System.Actions, Vcl.ActnList, Vcl.Imaging.pngimage;
 
 type
   TFlowchart_Manager = class(TForm)
@@ -27,6 +27,7 @@ type
     fileOpen1: TMenuItem;
     fileSaveAs1: TMenuItem;
     btnTemp: TButton;
+    dlgSaveFlowchart: TSaveDialog;
     procedure StartRoutine();
     procedure createtree();
     procedure FormDestroy(Sender: TObject);
@@ -36,8 +37,9 @@ type
     procedure scrMainMouseWheelUp(Sender: TObject; Shift: TShiftState;
       MousePos: TPoint; var Handled: Boolean);
     procedure fileOpenExecute(Sender: TObject);
-    
-
+    function saveFile(mode: TFileMode):string;
+    procedure savePNGFile;
+    procedure fileSaveExecute(Sender: TObject);
   private
     { Private declarations }
   public
@@ -109,6 +111,7 @@ begin
   clearScreen(Flowchart_Manager,pbMain);
   if TreeStructure <> nil then
     CreatingDrawModel(Flowchart_Manager, pbMain);
+  fileSave.Enabled:=true;
 end;
 
 procedure TFlowchart_Manager.CreateTree();
@@ -121,7 +124,6 @@ CurrentMaxNode := 0;
 RecTreeConstructor(0, TreeStructure);
 end;
 
-
 procedure TFlowchart_Manager.fileOpenExecute(Sender: TObject);
 begin
   if dlgOpenFile.Execute then
@@ -131,6 +133,13 @@ begin
   StartRoutine();
   CreatingDataModel();
   createtree;
+
+  fileSave.Enabled:=false;
+end;
+
+procedure TFlowchart_Manager.fileSaveExecute(Sender: TObject);
+begin
+  savePNGFile;
 end;
 
 procedure TFlowchart_Manager.StartRoutine();
@@ -157,7 +166,75 @@ while not Eof(FileUsed) do
 CloseFile(FileUsed);
 end;
 
+function TFlowchart_Manager.saveFile(mode: TFileMode):string;
+begin
+  Result := '';
+  case mode of
+    FBrakh:
+    begin
+      dlgSaveFlowchart.FileName := 'FlowChart.brakh';
+      dlgSaveFlowchart.Filter := 'Source-File|*.brakh';
+      dlgSaveFlowchart.DefaultExt := 'brakh';
+    end;
+    FBmp:
+    begin
+      dlgSaveFlowchart.FileName := 'FlowChart.bmp';
+      dlgSaveFlowchart.Filter := 'Bitmap Picture|*.bmp';
+      dlgSaveFlowchart.DefaultExt := 'bmp';
+    end;
+    FPng:
+     begin
+      dlgSaveFlowchart.FileName := 'FlowChart.png';
+      dlgSaveFlowchart.Filter := 'PNG|*.png';
+      dlgSaveFlowchart.DefaultExt := 'png';
+    end;
+  end;
+  if dlgSaveFlowchart.Execute then
+  begin
+    Result := dlgSaveFlowchart.FileName;
+  end;
 
+end;
+
+procedure TFlowchart_Manager.savePNGFile;
+var
+  path: string;
+  oldScale: real;
+  png : TPngImage;
+  bitmap: TBitmap;
+  tempWidth, tempHeight: Integer;
+const
+  ExportScale = 4;
+begin
+  oldScale := FScale;
+  path := saveFile(FPng);
+  if path <> '' then
+  begin
+//    ClickFigure := nil;
+    try
+      bitmap := TBitMap.Create;
+      bitmap.Height := maxBit;
+      bitmap.Width := maxBit;
+      with bitmap do
+      begin
+        png := TPNGImage.Create;
+   //     FScale := ExportScale;
+        tempWidth := 0;
+        tempHeight := 0;
+        drawModel(Canvas, tempWidth, tempHeight);
+        Width := tempWidth;
+        Height := tempHeight;
+   //     FScale := oldScale;
+      end;
+        png.Assign(bitmap);
+        png.Draw(bitmap.Canvas, Rect(0, 0, bitmap.Width, bitmap.Height));
+        png.SaveToFile(path)
+     finally
+        bitmap.free;
+        png.free;
+    end;
+  end;
+end;
 
 
 end.

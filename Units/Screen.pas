@@ -1,7 +1,7 @@
 unit Screen;
 
 interface
-  uses TypesAndVars, draw.Model,
+  uses TypesAndVars, draw.Model, View,
        Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
        Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.StdCtrls, Vcl.ComCtrls,
        Vcl.ExtCtrls;
@@ -13,16 +13,22 @@ implementation
 
 procedure clearScreen(Form: TForm; paintBox: TPaintBox);
 begin
-  with paintBox do
-    begin
-      Canvas.Rectangle(0,0, Form.Width, form.Height);
-    end;
+  with PaintBox.Canvas do begin
+  //    Brush.Color:=Form.Color;
+      FillRect(PaintBox.ClientRect);
+  end;
 end;
 
 procedure screenUpdate(Form: TForm; paintBox: TPaintBox);
+var
+  tempWidth, tempHeight: Integer;
 begin
   clearScreen(Form, paintBox);
-  drawModel(Form,paintBox);
+  tempWidth := paintBox.Width;
+  tempHeight := paintBox.Height;
+  drawModel(paintBox.Canvas, tempWidth, tempHeight);
+  paintBox.Width := tempWidth;
+  paintBox.Height := tempHeight;
 end;
 
 end.
