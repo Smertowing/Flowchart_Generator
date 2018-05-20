@@ -2,8 +2,8 @@ object Flowchart_Manager: TFlowchart_Manager
   Left = 0
   Top = 0
   Caption = 'Flowchart_Manager'
-  ClientHeight = 391
-  ClientWidth = 958
+  ClientHeight = 567
+  ClientWidth = 976
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,9 +19,10 @@ object Flowchart_Manager: TFlowchart_Manager
     Left = 0
     Top = 0
     Width = 361
-    Height = 391
+    Height = 567
     Align = alLeft
     TabOrder = 0
+    ExplicitHeight = 371
     object splMemoTree: TSplitter
       Left = 1
       Top = 235
@@ -49,13 +50,14 @@ object Flowchart_Manager: TFlowchart_Manager
       Height = 25
       Caption = 'Test'
       TabOrder = 1
+      Visible = False
       OnClick = btnTempClick
     end
     object reMainEdit: TRichEdit
       Left = 1
       Top = 237
       Width = 359
-      Height = 153
+      Height = 329
       Align = alClient
       Font.Charset = RUSSIAN_CHARSET
       Font.Color = clWindowText
@@ -68,13 +70,14 @@ object Flowchart_Manager: TFlowchart_Manager
       ScrollBars = ssVertical
       TabOrder = 2
       Zoom = 100
+      ExplicitHeight = 133
     end
   end
   object scrMain: TScrollBox
     Left = 361
     Top = 0
-    Width = 597
-    Height = 391
+    Width = 615
+    Height = 567
     HorzScrollBar.ButtonSize = 10
     VertScrollBar.ButtonSize = 20
     VertScrollBar.ParentColor = False
@@ -83,6 +86,8 @@ object Flowchart_Manager: TFlowchart_Manager
     TabOrder = 1
     OnMouseWheelDown = scrMainMouseWheelDown
     OnMouseWheelUp = scrMainMouseWheelUp
+    ExplicitWidth = 597
+    ExplicitHeight = 371
     object pbMain: TPaintBox
       Left = 5
       Top = 0
@@ -93,8 +98,8 @@ object Flowchart_Manager: TFlowchart_Manager
       OnPaint = pbMainPaint
     end
     object mmoInput: TMemo
-      Left = 496
-      Top = 399
+      Left = 514
+      Top = 515
       Width = 98
       Height = 49
       Font.Charset = DEFAULT_CHARSET

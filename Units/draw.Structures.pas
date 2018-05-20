@@ -21,6 +21,7 @@ begin
   R:=round(height/2);
   with Canv do
     begin
+      Pen.Width := 2;
       Pen.Color := color;
       Arc(x,y,x+height,y+height,x+R,y,x+R,y+height);
       Arc(x+width-height,y,x+width,y+height,x+width-R,y+height,x+width-R,y);
@@ -34,6 +35,7 @@ begin
   y := y+space;
   with Canv do
     begin
+      Pen.Width := 2;
       Pen.Color := color;
       Arc(x,y,x+height,y+height,x+R,y,x+R,y+height);
       Arc(x+width-height,y,x+width,y+height,x+width-R,y+height,x+width-R,y);
@@ -50,6 +52,7 @@ begin
   y := y+space;
   with Canv do
     begin
+      Pen.Width := 2;
       Pen.Color := color;
       MoveTo(x,y);
       LineTo(x+width,y);
@@ -67,6 +70,7 @@ begin
   R2:=Round(width/2);
   with Canv do
     begin
+      Pen.Width := 2;
       Pen.Color := color;
       MoveTo(x+R2,y);
       LineTo(x+width,y+R1);
@@ -87,6 +91,8 @@ begin
   R:=Round(width/4);
   with Canv do
     begin
+      Pen.Width := 2;
+      Pen.Color := color;
       MoveTo(x+R,y);
       LineTo(x+width,y);
       LineTo(x+width-R,y+height);
@@ -104,6 +110,7 @@ begin
   R2:=Round(width/4);
   with Canv do
     begin
+      Pen.Width := 2;
       Pen.Color := color;
       MoveTo(x+R2,y);
       LineTo(x+width-R2,y);
@@ -118,6 +125,7 @@ begin
   y:= y + space;
   with Canv do
     begin
+      Pen.Width := 2;
       Pen.Color := color;
       MoveTo(x,y);
       LineTo(x+width,y);
@@ -133,6 +141,7 @@ end;
 procedure drawLine(Canv:TCanvas; x1,y1,x2,y2:Integer);
 begin
   Canv.Pen.Color := clBlack;
+  Canv.Pen.Width := 2;
   if (x1=x2) or (y1=y2) then
     with Canv do
       begin
