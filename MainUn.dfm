@@ -2,9 +2,10 @@ object Flowchart_Manager: TFlowchart_Manager
   Left = 0
   Top = 0
   Caption = 'Flowchart_Manager'
-  ClientHeight = 567
+  ClientHeight = 547
   ClientWidth = 976
   Color = clBtnFace
+  DoubleBuffered = True
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
@@ -19,10 +20,11 @@ object Flowchart_Manager: TFlowchart_Manager
     Left = 0
     Top = 0
     Width = 361
-    Height = 567
+    Height = 547
     Align = alLeft
+    Color = clWhite
+    ParentBackground = False
     TabOrder = 0
-    ExplicitHeight = 371
     object splMemoTree: TSplitter
       Left = 1
       Top = 235
@@ -45,8 +47,8 @@ object Flowchart_Manager: TFlowchart_Manager
         00000000000100}
     end
     object btnTemp: TButton
-      Left = 280
-      Top = 206
+      Left = 8
+      Top = 204
       Width = 75
       Height = 25
       Caption = 'Test'
@@ -58,7 +60,7 @@ object Flowchart_Manager: TFlowchart_Manager
       Left = 1
       Top = 237
       Width = 359
-      Height = 329
+      Height = 309
       Align = alClient
       Font.Charset = RUSSIAN_CHARSET
       Font.Color = clWindowText
@@ -72,24 +74,33 @@ object Flowchart_Manager: TFlowchart_Manager
       ScrollBars = ssVertical
       TabOrder = 2
       Zoom = 100
-      ExplicitHeight = 133
+    end
+    object chkMode: TCheckBox
+      Left = 274
+      Top = 212
+      Width = 81
+      Height = 17
+      Caption = 'Editor Mode'
+      TabOrder = 3
+      OnClick = chkModeClick
     end
   end
   object scrMain: TScrollBox
     Left = 361
     Top = 0
     Width = 615
-    Height = 567
+    Height = 547
     HorzScrollBar.ButtonSize = 10
     VertScrollBar.ButtonSize = 20
     VertScrollBar.ParentColor = False
     Align = alClient
     BorderStyle = bsNone
+    DoubleBuffered = True
+    ParentDoubleBuffered = False
     TabOrder = 1
     OnMouseWheelDown = scrMainMouseWheelDown
     OnMouseWheelUp = scrMainMouseWheelUp
-    ExplicitWidth = 597
-    ExplicitHeight = 371
+    ExplicitLeft = 366
     object pbMain: TPaintBox
       Left = 5
       Top = 0
@@ -112,15 +123,6 @@ object Flowchart_Manager: TFlowchart_Manager
       ParentFont = False
       TabOrder = 0
       Visible = False
-    end
-    object chkMode: TCheckBox
-      Left = 5
-      Top = 6
-      Width = 97
-      Height = 17
-      Caption = 'Text Editing Mode'
-      TabOrder = 1
-      OnClick = chkModeClick
     end
   end
   object MainMenu: TMainMenu

@@ -92,34 +92,41 @@ begin
   X:= Mouse.CursorPos.X - foo.x;
   Y:= Mouse.CursorPos.Y - foo.y;
 
-  RestoreDafault();
-  reMainEdit.SelStart:=0;
-  reMainEdit.SelLength:=0;
-  for i := 0 to reMainEdit.Lines.Count - 1 do
+  if chkMode.checked then
     begin
-      reMainEdit.SelLength:=reMainEdit.SelLength + Length(reMainEdit.Lines[i]);
-    end;
-  reMainEdit.SelAttributes.Color := clBlack;
+      changeTheirMind(x,y);
+    end
+  else
+    begin
+      RestoreDafault();
+      reMainEdit.SelStart:=0;
+      reMainEdit.SelLength:=0;
+      for i := 0 to reMainEdit.Lines.Count - 1 do
+        begin
+          reMainEdit.SelLength:=reMainEdit.SelLength + Length(reMainEdit.Lines[i]);
+        end;
+      reMainEdit.SelAttributes.Color := clBlack;
 
-  a:=-1;
-  b:=-1;
+      a:=-1;
+      b:=-1;
 
-  FindAndBlue(X,Y,a,b);
+      FindAndBlue(X,Y,a,b);
 
 
   
-  temp:=0;
-  for i := 0 to a do
-    begin
-      temp:=temp+length(reMainEdit.Lines[i]);
+      temp:=0;
+      for i := 0 to a do
+        begin
+          temp:=temp+length(reMainEdit.Lines[i]);
+        end;
+      reMainEdit.SelStart:=temp-length(reMainEdit.Lines[a-1]);
+      reMainEdit.SelLength:=0;
+      for i := a to b do
+        begin
+          reMainEdit.SelLength:=reMainEdit.SelLength + Length(reMainEdit.Lines[i]);
+        end;
+      reMainEdit.SelAttributes.Color := clBlue;
     end;
-  reMainEdit.SelStart:=temp-length(reMainEdit.Lines[a-1]);
-  reMainEdit.SelLength:=0;
-  for i := a to b do
-    begin
-      reMainEdit.SelLength:=reMainEdit.SelLength + Length(reMainEdit.Lines[i]);
-    end;
-  reMainEdit.SelAttributes.Color := clBlue;
 
   pbMain.Repaint;
 end;
@@ -134,11 +141,11 @@ begin
       S:='';
       for i := 0 to CurrMemo.Lines.Count do
         S:=S+CurrMemo.Lines[i];
-        
+
       FindBranchAndResetCaption(CurrMemo.Left,CurrMemo.Top,S);
       CurrMemo.Visible:=false;
       pbMain.Repaint;
-    end; 
+    end;
 end;
 
 procedure TFlowchart_Manager.pbMainDblClick(Sender: TObject);

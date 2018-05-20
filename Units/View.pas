@@ -33,6 +33,16 @@ begin
   drawFunctionalBlock(Canv,x,y,width,height,space,caption,color)
 end;
 
+procedure drawAndFixPredefinedBlock(Canv:TCanvas; x,y,width,height, space:Integer; var canvWidth, canvHeigth:Integer; caption:string; color:TColor);
+begin
+  if canvWidth < x+width+tabu then
+    canvWidth := x+width+tabu;
+  if canvHeigth < y+height+tabu then
+    canvHeigth := y+height+tabu;
+
+  drawPredefinedBlock(Canv,x,y,width,height,space,caption,color)
+end;
+
 procedure drawAndFixBinaryChoice(Canv:TCanvas; x,y,width,height,space:Integer; var canvWidth, canvHeigth:integer; caption:string; color:TColor);
 begin
   if canvWidth < x+width+tabu then
@@ -213,10 +223,11 @@ begin
 
       DList^.x := x;
       DList^.y := y;
-      if DList^.structure = DataBlock then
-        drawAndFixDataBlock(Canvas,X,Y,basicWidth,basicHeight,0,canvWidth,canvHeigth,DList^.caption, Dlist^.color)
-      else
-        drawAndFixFunctionalBlock(Canvas,X,Y,basicWidth,basicHeight,0,canvWidth,canvHeigth,DList^.caption, Dlist^.color);
+      case DList^.hiddenstructure of
+        DataBlock: drawAndFixDataBlock(Canvas,X,Y,basicWidth,basicHeight,0,canvWidth,canvHeigth,DList^.caption, Dlist^.color);
+        Block: drawAndFixFunctionalBlock(Canvas,X,Y,basicWidth,basicHeight,0,canvWidth,canvHeigth,DList^.caption, Dlist^.color);
+        PredefinedBlock: drawAndFixPredefinedBlock(Canvas,X,Y,basicWidth,basicHeight,0,canvWidth,canvHeigth,DList^.caption, Dlist^.color);
+      end;
       drawAndFixLine(Canvas, X+Round(basicWidth/2), Y+basicHeight, X+Round(basicWidth/2), Y+basicHeight+skipSpaceY, canvWidth, canvHeigth);
 
       CurrY := CurrY + basicHeight + skipSpaceY;

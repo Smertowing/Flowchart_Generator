@@ -33,7 +33,7 @@ interface
   //    NextOne : PTreeStructure;
     end;
 
-    TStructuresList = (Terminator, Block, Choice, DataBlock, Loop, Another);
+    TStructuresList = (Terminator, Block, Choice, DataBlock, Loop, PredefinedBlock,Another);
     PDrawList = ^TDrawList;
     TChildsDraw = array of PDrawList;
     TDrawList = record
@@ -43,7 +43,7 @@ interface
   //    next : PDrawList;
       numberOfChildren : integer;
       children : TChildsDraw;
-      structure : TStructuresList;
+      structure, hiddenstructure : TStructuresList;
       branch : PTreeStructure;
       caption : string;
       color : TColor;

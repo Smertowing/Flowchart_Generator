@@ -10,6 +10,7 @@ interface
   procedure FindAndBlue(x,y:integer; var a,b:Integer);
   procedure FindBranch(x,y:Integer; var a,b: integer; var Str:string);
   procedure FindBranchAndResetCaption(x,y:Integer; str:string);
+  procedure changeTheirMind(x,y:Integer);
   procedure RestoreDafault;
   procedure ChangeChildrenState(x,y:integer);
   procedure EraseDrawList(var DList: PDrawList);
@@ -35,6 +36,7 @@ begin
   DrawUnit^.y := -1000;
   DrawUnit^.color := clBlack;
   DrawUnit^.Space := 0;
+  DrawUnit^.hiddenstructure := Block;
 end;
 
 procedure EraseDrawList(var DList: PDrawList);
@@ -248,6 +250,35 @@ end;
 
 begin
   FindBranchAndResetCaptionRec(DrawList,x,y);
+end;
+
+procedure changeTheirMind(x,y:Integer);
+
+procedure changeTheirMindRec(var DList:PDrawList; x,y:integer);
+var
+  k:Integer;
+begin
+  K:=0;
+  if DList^.chAvailable then
+    while  k <= DList^.NumberOfChildren-1 do
+    begin
+      changeTheirMindRec(DList^.children[k],x,y);
+      Inc(k);
+    end;
+  if (x >= DList^.x) and (x<= Dlist^.x + basicWidth) and (((y>= Dlist^.y) and (y<= Dlist^.y + basicHeight)) or
+  (y>= Dlist^.y + Dlist^.space) and (y<= Dlist^.y + Dlist^.space + basicHeight))  then
+    begin
+      case DList^.hiddenstructure of
+        DataBlock: DList^.hiddenstructure := Block;
+        Block: DList^.hiddenstructure := PredefinedBlock;
+        PredefinedBlock: DList^.hiddenstructure := DataBlock;
+      end;
+
+    end;
+end;
+
+begin
+  changeTheirMindRec(DrawList,x,y);
 end;
 
 end.

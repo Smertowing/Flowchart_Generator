@@ -8,6 +8,7 @@ interface
 
   procedure drawTerminator(Canv:TCanvas; x,y,width,height, space:Integer; caption:string; color:TColor);
   procedure drawFunctionalBlock(Canv:TCanvas; x,y,width,height,space:Integer; caption:string; color:TColor);
+  procedure drawPredefinedBlock(Canv:TCanvas; x,y,width,height,space:Integer; caption:string; color:TColor);
   procedure drawBinaryChoice(Canv:TCanvas; x,y,width,height,space:Integer; caption:string; color:TColor);
   procedure drawDataBlock(Canv:TCanvas; x,y,width,height,space:Integer; caption:string; color:TColor);
   procedure drawLoop(Canv:TCanvas; x,y,width,height, space:Integer; caption:string; color:TColor);
@@ -96,6 +97,43 @@ begin
     end;
 end;
 
+procedure drawPredefinedBlock(Canv:TCanvas; x,y,width,height, space:Integer; caption:string; color:TColor);
+var
+  S:string;
+  i:Integer;
+begin
+  if Canv.TextWidth(caption) > Round(Width*0.7) then
+    begin
+      S:='';
+      i:=1;
+      while Canv.TextWidth(s) < Round(Width*0.7) do
+        begin
+          S:=S+caption[i];
+          Inc(i);
+        end;
+      for i := Length(S) downto Length(s)-2 do
+        S[i]:='.';
+      Caption:=S;
+    end;
+
+  y := y+space;
+  with Canv do
+    begin
+      Pen.Width := 2;
+      Pen.Color := color;
+      MoveTo(x,y);
+      LineTo(x+width,y);
+      LineTo(x+width,y+height);
+      LineTo(x,y+height);
+      LineTo(x,y);
+      MoveTo(x+Width div 6,y);
+      LineTo(x+Width div 6,y+height);
+      MoveTo(x-Width div 6+width,y);
+      LineTo(x-Width div 6+width,y+height);
+      TextOut((x + Width div 2)-(canv.TextWidth(caption) div 2), y+(height div 2)-10, caption);
+    end;
+end;
+
 procedure drawBinaryChoice(Canv:TCanvas; x,y,width,height,space:Integer; caption:string; color:TColor);
 var R1,R2:Integer;
   s:string;
@@ -138,11 +176,11 @@ var R:Integer;
     S:string;
     i:integer;
 begin
-  if Canv.TextWidth(caption) > Round(Width*0.9) then
+  if Canv.TextWidth(caption) > Round(Width*0.7) then
     begin
       S:='';
       i:=1;
-      while Canv.TextWidth(s) < Round(Width*0.9) do
+      while Canv.TextWidth(s) < Round(Width*0.7) do
         begin
           S:=S+caption[i];
           Inc(i);
