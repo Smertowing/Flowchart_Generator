@@ -13,8 +13,10 @@ interface
     numberOfBlockDecl = 9;
     BlockDeclNames: array[1..numberOfBlockDecl] of string[10] = ('procedure', 'function', 'if', 'while', 'for', 'repeat', 'begin', 'code', 'else');
 
-    maxBit = 15000;
+    maxBit = 10000;
     theEnd = 'End';
+    basicHeight = 100;
+    basicWidth = 200;
   type
     TFileMode  = (FBrakh, FBmp, FPng);
 
@@ -35,15 +37,16 @@ interface
     PDrawList = ^TDrawList;
     TChildsDraw = array of PDrawList;
     TDrawList = record
-  //   x,y,space  :inteher;
-  //   height,width: Integer;
+      x,y,space :inteGer;
+  //    height,width: Integer;
       chAvailable : Boolean;
-  //   next : PDrawList;
+  //    next : PDrawList;
       numberOfChildren : integer;
       children : TChildsDraw;
       structure : TStructuresList;
       branch : PTreeStructure;
       caption : string;
+      color : TColor;
     end;
 
   var
