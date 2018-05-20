@@ -38,6 +38,7 @@ object Flowchart_Manager: TFlowchart_Manager
       Height = 234
       Align = alTop
       Indent = 19
+      ReadOnly = True
       TabOrder = 0
       Items.NodeData = {
         03010000001E0000000000000000000000FFFFFFFFFFFFFFFF00000000000000
@@ -67,6 +68,7 @@ object Flowchart_Manager: TFlowchart_Manager
       Lines.Strings = (
         '')
       ParentFont = False
+      ReadOnly = True
       ScrollBars = ssVertical
       TabOrder = 2
       Zoom = 100
