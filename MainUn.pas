@@ -6,7 +6,7 @@ uses
   TypesAndVars, data.Model, draw.Structures, draw.Model, View, Screen,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.StdCtrls, Vcl.ComCtrls,
-  Vcl.ExtCtrls, System.Actions, Vcl.ActnList, Vcl.Imaging.pngimage;
+  Vcl.ExtCtrls, System.Actions, Vcl.ActnList, Vcl.Imaging.pngimage, Vcl.DBCtrls;
 
 type
   TFlowchart_Manager = class(TForm)
@@ -29,6 +29,8 @@ type
     dlgSaveFlowchart: TSaveDialog;
     mmoInput: TMemo;
     reMainEdit: TRichEdit;
+    N1: TMenuItem;
+    chkMode: TCheckBox;
     procedure StartRoutine();
     procedure createtree();
     procedure FormDestroy(Sender: TObject);
@@ -48,6 +50,8 @@ type
     procedure fileSaveBMPExecute(Sender: TObject);
     procedure pbMainDblClick(Sender: TObject);
     procedure pbMainClick(Sender: TObject);
+    procedure keyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure chkModeClick(Sender: TObject);
 
   private
     { Private declarations }
@@ -72,8 +76,8 @@ begin
 strList.Free;
 if TreeStructure <> nil then
   EraseTree(TreeStructure);
-//if DrawList <> nil then
-  //EraseDrawList(DrawList);
+if DrawList <> nil then
+  EraseDrawList(DrawList);
 end;
 
 procedure TFlowchart_Manager.pbMainClick(Sender: TObject);
@@ -102,12 +106,14 @@ begin
 
   FindAndBlue(X,Y,a,b);
 
+
+  
   temp:=0;
-  for i := 0 to a-1 do
+  for i := 0 to a do
     begin
       temp:=temp+length(reMainEdit.Lines[i]);
     end;
-  reMainEdit.SelStart:=temp;
+  reMainEdit.SelStart:=temp-length(reMainEdit.Lines[a-1]);
   reMainEdit.SelLength:=0;
   for i := a to b do
     begin
@@ -118,20 +124,67 @@ begin
   pbMain.Repaint;
 end;
 
+procedure TFlowchart_Manager.keyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+var
+  S:string;
+  i: Integer;
+begin 
+  if (Key = VK_ESCAPE) or ((key = VK_RETURN) and not(ssShift in Shift)) then
+    begin
+      S:='';
+      for i := 0 to CurrMemo.Lines.Count do
+        S:=S+CurrMemo.Lines[i];
+        
+      FindBranchAndResetCaption(CurrMemo.Left,CurrMemo.Top,S);
+      CurrMemo.Visible:=false;
+      pbMain.Repaint;
+    end; 
+end;
+
 procedure TFlowchart_Manager.pbMainDblClick(Sender: TObject);
 var
   a,b, temp:integer;
   i: Integer;
   foo: TPoint;
   X,Y:integer;
+  S:string;
 begin
   foo.X := (pbMain.Left + scrMain.Left + Flowchart_Manager.Left);
   foo.Y := (pbMain.Top + scrMain.Top + Flowchart_Manager.Top + 100);
   X:= Mouse.CursorPos.X - foo.x;
   Y:= Mouse.CursorPos.Y - foo.y;
 
-  ChangeChildrenState(X,Y);
-  pbMain.Repaint;
+  if chkMode.checked then
+    begin
+      a:=-1;
+      b:=-1;
+      S:='';
+      FindBranch(x,y,a,b,S);
+      if a>=0 then
+        begin
+          if CurrMemo <> nil then
+            freeandnil(CurrMemo);
+          CurrMemo := TMemo.Create(Self);
+          with CurrMemo do
+            begin
+              Parent:=scrMain;
+              currmemo.OnKeyDown := keyDown;
+              visible := true;
+              Left := a+pbMain.Left;
+              Top := b+pbMain.Top;
+              Width := basicWidth;
+              Height := basicHeight;
+              lines[0] := S;
+            end;
+          Self.Invalidate;
+        end;
+    end
+  else
+    begin
+    ChangeChildrenState(X,Y);
+    pbMain.Repaint;
+    end;
+
 end;
 
 procedure TFlowchart_Manager.pbMainPaint(Sender: TObject);
@@ -179,6 +232,13 @@ begin
 //  drawBinaryChoice(pbMain,50,50,100,50);
 //  drawLoop(pbMain,50,50,100,50,400)
 //  drawDataBlock(pbMain,50,50,100,50);
+end;
+
+procedure TFlowchart_Manager.chkModeClick(Sender: TObject);
+begin
+  if CurrMemo<>nil then
+    if CurrMemo.Visible then
+      CurrMemo.Visible:=false;
 end;
 
 procedure TFlowchart_Manager.CreateTree();

@@ -113,6 +113,15 @@ object Flowchart_Manager: TFlowchart_Manager
       TabOrder = 0
       Visible = False
     end
+    object chkMode: TCheckBox
+      Left = 5
+      Top = 6
+      Width = 97
+      Height = 17
+      Caption = 'Text Editing Mode'
+      TabOrder = 1
+      OnClick = chkModeClick
+    end
   end
   object MainMenu: TMainMenu
     Left = 256
@@ -131,6 +140,9 @@ object Flowchart_Manager: TFlowchart_Manager
         Action = fileSaveBMP
         Caption = 'Save BMP'
       end
+    end
+    object N1: TMenuItem
+      Caption = '-'
     end
   end
   object dlgOpenFile: TOpenDialog

@@ -17,7 +17,23 @@ implementation
 
 procedure drawTerminator(Canv:TCanvas; x,y,width,height, space:Integer; caption:string; color:TColor);
 var R:Integer;
+    S:string;
+    i:integer;
 begin
+  if Canv.TextWidth(caption) > Round(Width*0.9) then
+    begin
+      S:='';
+      i:=1;
+      while Canv.TextWidth(s) < Round(Width*0.9) do
+        begin
+          S:=S+caption[i];
+          Inc(i);
+        end;
+      for i := Length(S) downto Length(s)-2 do
+        S[i]:='.';
+      Caption:=S;
+    end;
+
   R:=round(height/2);
   with Canv do
     begin
@@ -48,7 +64,24 @@ begin
 end;
 
 procedure drawFunctionalBlock(Canv:TCanvas; x,y,width,height, space:Integer; caption:string; color:TColor);
+var
+  S:string;
+  i:Integer;
 begin
+  if Canv.TextWidth(caption) > Round(Width*0.9) then
+    begin
+      S:='';
+      i:=1;
+      while Canv.TextWidth(s) < Round(Width*0.9) do
+        begin
+          S:=S+caption[i];
+          Inc(i);
+        end;
+      for i := Length(S) downto Length(s)-2 do
+        S[i]:='.';
+      Caption:=S;
+    end;
+
   y := y+space;
   with Canv do
     begin
@@ -65,7 +98,23 @@ end;
 
 procedure drawBinaryChoice(Canv:TCanvas; x,y,width,height,space:Integer; caption:string; color:TColor);
 var R1,R2:Integer;
+  s:string;
+  i:integer;
 begin
+  if Canv.TextWidth(caption) > Round(Width/2.5) then
+    begin
+      S:='';
+      i:=1;
+      while Canv.TextWidth(s) < Round(Width/2.5) do
+        begin
+          S:=S+caption[i];
+          Inc(i);
+        end;
+      for i := Length(S) downto Length(s)-2 do
+        S[i]:='.';
+      Caption:=S;
+    end;
+
   R1:=Round(height/2);
   R2:=Round(width/2);
   with Canv do
@@ -78,7 +127,7 @@ begin
       LineTo(x,y+R1);
       LineTo(x+R2,y);
 //      TextOut((x + Width div 2)-(canv.TextWidth(caption) div 2), y+(height div 2)-10, caption);
-      TextOut((x + Width div 2)-(canv.TextWidth('If') div 2), y+(height div 2)-10, 'If');
+      TextOut((x + Width div 2)-(canv.TextWidth(caption) div 2), y+(height div 2)-10, caption);
       TextOut(x-(canv.TextWidth('Yes') div 2), y+height+20, 'Yes');
       TextOut(x+width+20-(canv.TextWidth('No') div 2), y, 'No');
     end;
@@ -86,7 +135,23 @@ end;
 
 procedure drawDataBlock(Canv:TCanvas; x,y,width,height,space:Integer; caption:string; color:TColor);
 var R:Integer;
+    S:string;
+    i:integer;
 begin
+  if Canv.TextWidth(caption) > Round(Width*0.9) then
+    begin
+      S:='';
+      i:=1;
+      while Canv.TextWidth(s) < Round(Width*0.9) do
+        begin
+          S:=S+caption[i];
+          Inc(i);
+        end;
+      for i := Length(S) downto Length(s)-2 do
+        S[i]:='.';
+      Caption:=S;
+    end;
+
   y := y+space;
   R:=Round(width/4);
   with Canv do
@@ -104,7 +169,22 @@ end;
 
 procedure drawLoop(Canv:TCanvas; x,y,width,height, space:Integer; caption:string; color:TColor);
 var R1,R2:Integer;
+    S:string;
+    i:integer;
 begin
+  if Canv.TextWidth(caption) > Round(Width*0.9) then
+    begin
+      S:='';
+      i:=1;
+      while Canv.TextWidth(s) < Round(Width*0.9) do
+        begin
+          S:=S+caption[i];
+          Inc(i);
+        end;
+      for i := Length(S) downto Length(s)-2 do
+        S[i]:='.';
+      Caption:=S;
+    end;
 
   R1:=Round(height/4);
   R2:=Round(width/4);
@@ -120,7 +200,7 @@ begin
       LineTo(x,y+R1);
       LineTo(x+R2,y);
       TextOut((x + Width div 2)-(canv.TextWidth('start loop') div 2), y+(height div 2)-40, 'start loop');
-//      TextOut((x + Width div 2)-(canv.TextWidth(caption) div 2), y+(height div 2), caption);
+      TextOut((x + Width div 2)-(canv.TextWidth(caption) div 2), y+(height div 2), caption);
     end;
   y:= y + space;
   with Canv do

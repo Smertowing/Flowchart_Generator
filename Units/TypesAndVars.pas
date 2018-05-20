@@ -55,7 +55,7 @@ interface
     DrawList: PDrawList;
     currentFile: string;
     FScale: Real;
-
+    CurrMemo: TMemo;
 
 implementation
 

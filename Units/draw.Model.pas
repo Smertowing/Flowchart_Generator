@@ -8,6 +8,8 @@ interface
 
   procedure CreatingDrawModel(Form: TForm; paintBox: TPaintBox);
   procedure FindAndBlue(x,y:integer; var a,b:Integer);
+  procedure FindBranch(x,y:Integer; var a,b: integer; var Str:string);
+  procedure FindBranchAndResetCaption(x,y:Integer; str:string);
   procedure RestoreDafault;
   procedure ChangeChildrenState(x,y:integer);
   procedure EraseDrawList(var DList: PDrawList);
@@ -196,6 +198,56 @@ end;
 
 begin
   changeChildrenStateRec(DrawList,x,y);
+end;
+
+procedure FindBranch(x,y:Integer; var a,b: integer; var Str:string);
+
+procedure FindBranchRec(var DList:PDrawList; x,y:integer);
+var
+  k:Integer;
+begin
+  K:=0;
+  if DList^.chAvailable then
+    while  k <= DList^.NumberOfChildren-1 do
+    begin
+      FindBranchRec(DList^.children[k],x,y);
+      Inc(k);
+    end;
+  if (x >= DList^.x) and (x<= Dlist^.x + basicWidth) and (((y>= Dlist^.y) and (y<= Dlist^.y + basicHeight)) or
+  (y>= Dlist^.y + Dlist^.space) and (y<= Dlist^.y + Dlist^.space + basicHeight))  then
+    begin
+      a:=DList^.x;
+      b:=DList^.y;
+      Str:=Dlist^.caption;
+    end;
+end;
+
+begin
+  FindBranchRec(DrawList,x,y);
+end;
+
+procedure FindBranchAndResetCaption(x,y:Integer; str:string);
+
+procedure FindBranchAndResetCaptionRec(var DList:PDrawList; x,y:integer);
+var
+  k:Integer;
+begin
+  K:=0;
+  if DList^.chAvailable then
+    while  k <= DList^.NumberOfChildren-1 do
+    begin
+      FindBranchAndResetCaptionRec(DList^.children[k],x,y);
+      Inc(k);
+    end;
+  if (x >= DList^.x) and (x<= Dlist^.x + basicWidth) and (((y>= Dlist^.y) and (y<= Dlist^.y + basicHeight)) or
+  (y>= Dlist^.y + Dlist^.space) and (y<= Dlist^.y + Dlist^.space + basicHeight))  then
+    begin
+      DList^.caption := Str;
+    end;
+end;
+
+begin
+  FindBranchAndResetCaptionRec(DrawList,x,y);
 end;
 
 end.

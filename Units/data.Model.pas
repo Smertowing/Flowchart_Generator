@@ -386,8 +386,8 @@ begin
                 end;
 
                 Inc(CurrentLine);
-                if (checkStr(StrList[CurrentLine], 'else')) then
-                  CanILeave := True;
+             {   if (checkStr(StrList[CurrentLine], 'else')) then
+                  CanILeave := True;       }
 
               end;
             end;
