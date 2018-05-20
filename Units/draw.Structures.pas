@@ -6,22 +6,21 @@ interface
        Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.StdCtrls, Vcl.ComCtrls,
        Vcl.ExtCtrls, System.Actions, Vcl.ActnList;
 
-  procedure drawTerminator(Canv:TCanvas; x,y,width,height, space:Integer; caption:string; color:TColor);
-  procedure drawFunctionalBlock(Canv:TCanvas; x,y,width,height,space:Integer; caption:string; color:TColor);
-  procedure drawBinaryChoice(Canv:TCanvas; x,y,width,height,space:Integer; caption:string; color:TColor);
-  procedure drawDataBlock(Canv:TCanvas; x,y,width,height,space:Integer; caption:string; color:TColor);
-  procedure drawLoop(Canv:TCanvas; x,y,width,height, space:Integer; caption:string; color:TColor);
+  procedure drawTerminator(Canv:TCanvas; x,y,width,height, space:Integer; caption:string);
+  procedure drawFunctionalBlock(Canv:TCanvas; x,y,width,height,space:Integer; caption:string);
+  procedure drawBinaryChoice(Canv:TCanvas; x,y,width,height,space:Integer; caption:string);
+  procedure drawDataBlock(Canv:TCanvas; x,y,width,height,space:Integer; caption:string);
+  procedure drawLoop(Canv:TCanvas; x,y,width,height, space:Integer; caption:string);
   procedure drawLine(Canv:TCanvas; x1,y1,x2,y2:Integer);
 
 implementation
 
-procedure drawTerminator(Canv:TCanvas; x,y,width,height, space:Integer; caption:string; color:TColor);
+procedure drawTerminator(Canv:TCanvas; x,y,width,height, space:Integer; caption:string);
 var R:Integer;
 begin
   R:=round(height/2);
   with Canv do
     begin
-      Pen.Color := color;
       Arc(x,y,x+height,y+height,x+R,y,x+R,y+height);
       Arc(x+width-height,y,x+width,y+height,x+width-R,y+height,x+width-R,y);
       MoveTo(x+r,y);
@@ -34,7 +33,6 @@ begin
   y := y+space;
   with Canv do
     begin
-      Pen.Color := color;
       Arc(x,y,x+height,y+height,x+R,y,x+R,y+height);
       Arc(x+width-height,y,x+width,y+height,x+width-R,y+height,x+width-R,y);
       MoveTo(x+r,y);
@@ -45,12 +43,11 @@ begin
     end;
 end;
 
-procedure drawFunctionalBlock(Canv:TCanvas; x,y,width,height, space:Integer; caption:string; color:TColor);
+procedure drawFunctionalBlock(Canv:TCanvas; x,y,width,height, space:Integer; caption:string);
 begin
   y := y+space;
   with Canv do
     begin
-      Pen.Color := color;
       MoveTo(x,y);
       LineTo(x+width,y);
       LineTo(x+width,y+height);
@@ -60,14 +57,13 @@ begin
     end;
 end;
 
-procedure drawBinaryChoice(Canv:TCanvas; x,y,width,height,space:Integer; caption:string; color:TColor);
+procedure drawBinaryChoice(Canv:TCanvas; x,y,width,height,space:Integer; caption:string);
 var R1,R2:Integer;
 begin
   R1:=Round(height/2);
   R2:=Round(width/2);
   with Canv do
     begin
-      Pen.Color := color;
       MoveTo(x+R2,y);
       LineTo(x+width,y+R1);
       LineTo(x+R2,y+height);
@@ -80,7 +76,7 @@ begin
     end;
 end;
 
-procedure drawDataBlock(Canv:TCanvas; x,y,width,height,space:Integer; caption:string; color:TColor);
+procedure drawDataBlock(Canv:TCanvas; x,y,width,height,space:Integer; caption:string);
 var R:Integer;
 begin
   y := y+space;
@@ -96,15 +92,13 @@ begin
     end;
 end;
 
-procedure drawLoop(Canv:TCanvas; x,y,width,height, space:Integer; caption:string; color:TColor);
+procedure drawLoop(Canv:TCanvas; x,y,width,height, space:Integer; caption:string);
 var R1,R2:Integer;
 begin
-
   R1:=Round(height/4);
   R2:=Round(width/4);
   with Canv do
     begin
-      Pen.Color := color;
       MoveTo(x+R2,y);
       LineTo(x+width-R2,y);
       LineTo(x+width,y+R1);
@@ -118,7 +112,6 @@ begin
   y:= y + space;
   with Canv do
     begin
-      Pen.Color := color;
       MoveTo(x,y);
       LineTo(x+width,y);
       LineTo(x+width,y+height-R1);
@@ -132,7 +125,6 @@ end;
 
 procedure drawLine(Canv:TCanvas; x1,y1,x2,y2:Integer);
 begin
-  Canv.Pen.Color := clBlack;
   if (x1=x2) or (y1=y2) then
     with Canv do
       begin
