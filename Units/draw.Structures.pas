@@ -102,11 +102,11 @@ var
   S:string;
   i:Integer;
 begin
-  if Canv.TextWidth(caption) > Round(Width*0.7) then
+  if Canv.TextWidth(caption) > Round(Width*0.65) then
     begin
       S:='';
       i:=1;
-      while Canv.TextWidth(s) < Round(Width*0.7) do
+      while Canv.TextWidth(s) < Round(Width*0.65) do
         begin
           S:=S+caption[i];
           Inc(i);

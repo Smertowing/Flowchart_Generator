@@ -191,6 +191,7 @@ begin
 	end;
     end;
   end;
+
   if (sought = -1) then
 	begin
     writeln('Not found')

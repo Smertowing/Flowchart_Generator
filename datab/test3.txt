@@ -1,0 +1,26 @@
+kekprog;
+procedure FindAndBlue(x,y:integer; var a,b:Integer);
+
+procedure FindAndBlueDrawList(var DList:PDrawList; x,y:integer);
+var
+  k:Integer;
+begin
+  K:=0;
+  if DList^.chAvailable then
+    while  k <= DList^.NumberOfChildren-1 do
+    begin
+      FindAndBlueDrawList(DList^.children[k], x, y);
+      Inc(k);
+    end;
+
+  if (x >= DList^.x) and (x<= Dlist^.x + basicWidth) and (((y>= Dlist^.y) and (y<= Dlist^.y + basicHeight)) or (y>= Dlist^.y + Dlist^.space) and (y<= Dlist^.y + Dlist^.space + basicHeight))  then
+    begin
+      Dlist^.color := clBlue;
+      a:=DList^.branch^.DeclarationLine;
+      b:=DList^.branch^.EndLine;
+    end;
+end;
+
+begin
+  FindAndBlueDrawList(DrawList,x,y);
+end;

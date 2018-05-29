@@ -2,7 +2,7 @@ program FlowG_project;
 
 uses
   Vcl.Forms,
-  MainUn in 'MainUn.pas' {Form1},
+  MainUn in 'MainUn.pas' {FFlowChart_Manager},
   data.Model in 'Units\data.Model.pas',
   TypesAndVars in 'Units\TypesAndVars.pas',
   draw.Structures in 'Units\draw.Structures.pas',
@@ -15,6 +15,6 @@ uses
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  Application.CreateForm(TFlowchart_Manager, Flowchart_Manager);
+  Application.CreateForm(TFFlowchart_Manager, FFlowchart_Manager);
   Application.Run;
 end.

@@ -91,8 +91,7 @@ procedure drawModel(canvas:TCanvas; var canvWidth, canvHeigth:integer);
 const
   skipSpaceY = 100;
   skipSpaceX = 200;
-  basicHeight = 100;
-  basicWidth = 200;
+
 var
   k: Integer;
   x, y: Integer;

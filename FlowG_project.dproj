@@ -99,7 +99,7 @@
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
         <DCCReference Include="MainUn.pas">
-            <Form>Form1</Form>
+            <Form>FFlowChart_Manager</Form>
         </DCCReference>
         <DCCReference Include="Units\data.Model.pas"/>
         <DCCReference Include="Units\TypesAndVars.pas"/>

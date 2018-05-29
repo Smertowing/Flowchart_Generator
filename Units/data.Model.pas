@@ -319,7 +319,6 @@ begin
         SkipToImplement(CurrentLine);
         SkipToAfterFP(CurrentLine);
       end;                                     }
-
     if (checkStr(StrList[CurrentLine], 'class')) or (checkStr(StrList[CurrentLine], 'record')) then
       begin
         SkipToAfterRC(CurrentLine);

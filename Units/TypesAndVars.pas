@@ -13,7 +13,7 @@ interface
     numberOfBlockDecl = 9;
     BlockDeclNames: array[1..numberOfBlockDecl] of string[10] = ('procedure', 'function', 'if', 'while', 'for', 'repeat', 'begin', 'code', 'else');
 
-    maxBit = 10000;
+    maxBit = 15000;
     theEnd = 'End';
     basicHeight = 100;
     basicWidth = 200;
@@ -24,13 +24,10 @@ interface
     TChilds = array of PTreeStructure;
     TTreeStructure = record
       BlockName : string[200];
-  //    StartLine : integer;
       EndLine : Integer;
       DeclarationLine : integer;
-  //    Coordinates : TCoord;
       NumberOfChildren : integer;
       Children : TChilds;
-  //    NextOne : PTreeStructure;
     end;
 
     TStructuresList = (Terminator, Block, Choice, DataBlock, Loop, PredefinedBlock,Another);
@@ -40,7 +37,6 @@ interface
       x,y,space :inteGer;
   //    height,width: Integer;
       chAvailable : Boolean;
-  //    next : PDrawList;
       numberOfChildren : integer;
       children : TChildsDraw;
       structure, hiddenstructure : TStructuresList;
@@ -56,6 +52,7 @@ interface
     currentFile: string;
     FScale: Real;
     CurrMemo: TMemo;
+    OnMouseProc: Boolean;
 
 implementation
 

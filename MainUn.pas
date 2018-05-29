@@ -9,7 +9,7 @@ uses
   Vcl.ExtCtrls, System.Actions, Vcl.ActnList, Vcl.Imaging.pngimage, Vcl.DBCtrls;
 
 type
-  TFlowchart_Manager = class(TForm)
+  TFFlowChart_Manager = class(TForm)
     pnlMemoTree: TPanel;
     trMainTree: TTreeView;
     splMemoTree: TSplitter;
@@ -25,7 +25,6 @@ type
     fileOpen1: TMenuItem;
     fileSavePNG1: TMenuItem;
     fileSaveBMP1: TMenuItem;
-    btnTemp: TButton;
     dlgSaveFlowchart: TSaveDialog;
     mmoInput: TMemo;
     reMainEdit: TRichEdit;
@@ -35,7 +34,6 @@ type
     procedure createtree();
     procedure FormDestroy(Sender: TObject);
     procedure RecTreeConstructor(const shift: Integer; TempTreeStructure: PTreeStructure);
-    procedure btnTempClick(Sender: TObject);
     procedure pbMainPaint(Sender: TObject);
     procedure scrMainMouseWheelUp(Sender: TObject; Shift: TShiftState;
       MousePos: TPoint; var Handled: Boolean);
@@ -43,7 +41,7 @@ type
       MousePos: TPoint; var Handled: Boolean);
     procedure fileOpenExecute(Sender: TObject);
     function saveFile(mode: TFileMode):string;
-
+ //   procedure CheckBlockHint();
     procedure savePNGFile;
     procedure saveBMPFile;
     procedure fileSavePNGExecute(Sender: TObject);
@@ -52,7 +50,9 @@ type
     procedure pbMainClick(Sender: TObject);
     procedure keyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure chkModeClick(Sender: TObject);
-
+{    procedure pbMainMouseMove(Sender: TObject; Shift: TShiftState; X,
+      Y: Integer);
+    procedure pbMainMouseLeave(Sender: TObject);          }
   private
     { Private declarations }
   public
@@ -62,7 +62,7 @@ type
 
 
 var
-  Flowchart_Manager: TFlowchart_Manager;
+  FFlowChart_Manager: TFFlowChart_Manager;
   FileUsed: TextFile;
   TempNode: TTreeNode;
   CurrentMaxNode: Integer;
@@ -71,7 +71,7 @@ implementation
 
 {$R *.dfm}
 
-procedure TFlowchart_Manager.FormDestroy(Sender: TObject);
+procedure TFFlowChart_Manager.FormDestroy(Sender: TObject);
 begin
 strList.Free;
 if TreeStructure <> nil then
@@ -80,15 +80,15 @@ if DrawList <> nil then
   EraseDrawList(DrawList);
 end;
 
-procedure TFlowchart_Manager.pbMainClick(Sender: TObject);
+procedure TFFlowChart_Manager.pbMainClick(Sender: TObject);
 var
   a,b, temp:integer;
   i: Integer;
   foo: TPoint;
   X,Y:integer;
 begin
-  foo.X := (pbMain.Left + scrMain.Left + Flowchart_Manager.Left);
-  foo.Y := (pbMain.Top + scrMain.Top + Flowchart_Manager.Top + 100);
+  foo.X := (pbMain.Left + scrMain.Left + FFlowchart_Manager.Left);
+  foo.Y := (pbMain.Top + scrMain.Top + FFlowchart_Manager.Top + 100);
   X:= Mouse.CursorPos.X - foo.x;
   Y:= Mouse.CursorPos.Y - foo.y;
 
@@ -131,7 +131,7 @@ begin
   pbMain.Repaint;
 end;
 
-procedure TFlowchart_Manager.keyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+procedure TFFlowChart_Manager.keyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 var
   S:string;
   i: Integer;
@@ -148,7 +148,7 @@ begin
     end;
 end;
 
-procedure TFlowchart_Manager.pbMainDblClick(Sender: TObject);
+procedure TFFlowChart_Manager.pbMainDblClick(Sender: TObject);
 var
   a,b, temp:integer;
   i: Integer;
@@ -156,8 +156,8 @@ var
   X,Y:integer;
   S:string;
 begin
-  foo.X := (pbMain.Left + scrMain.Left + Flowchart_Manager.Left);
-  foo.Y := (pbMain.Top + scrMain.Top + Flowchart_Manager.Top + 100);
+  foo.X := (pbMain.Left + scrMain.Left + FFlowchart_Manager.Left);
+  foo.Y := (pbMain.Top + scrMain.Top + FFlowchart_Manager.Top + 100);
   X:= Mouse.CursorPos.X - foo.x;
   Y:= Mouse.CursorPos.Y - foo.y;
 
@@ -182,6 +182,7 @@ begin
               Width := basicWidth;
               Height := basicHeight;
               lines[0] := S;
+              SetFocus;
             end;
           Self.Invalidate;
         end;
@@ -194,13 +195,53 @@ begin
 
 end;
 
-procedure TFlowchart_Manager.pbMainPaint(Sender: TObject);
+{procedure TFlowchart_Manager.CheckBlockHint();
+var
+  foo: TPoint;
+  X,Y,a,b:integer;
+  str:string;
 begin
+  foo.X := (pbMain.Left + scrMain.Left + Flowchart_Manager.Left);
+  foo.Y := (pbMain.Top + scrMain.Top + Flowchart_Manager.Top + 100);
+  X:= Mouse.CursorPos.X - foo.x;
+  Y:= Mouse.CursorPos.Y - foo.y;
+
+  a:=-1;
+  b:=-1;
+  str:='';
+
   if DrawList <> nil then
-    screenUpdate(Flowchart_Manager,pbMain);
+    FindBranch(X,Y,a,b,Str);
+  if str <> '' then
+    begin
+    pbMain.Hint := str;
+    pbMain.ShowHint := true;
+    application.HintPause := 1;
+    end
+  else
+    if OnMouseProc then
+      CheckBlockHint;
 end;
 
-procedure TFlowchart_Manager.RecTreeConstructor(const shift: Integer; TempTreeStructure: PTreeStructure);
+procedure TFlowchart_Manager.pbMainMouseLeave(Sender: TObject);
+begin
+  OnMouseProc:=False;
+end;
+
+procedure TFlowchart_Manager.pbMainMouseMove(Sender: TObject;
+  Shift: TShiftState; X, Y: Integer);
+begin
+  OnMouseProc:=True;
+  CheckBlockHint;
+end;
+                                         }
+procedure TFFlowChart_Manager.pbMainPaint(Sender: TObject);
+begin
+  if DrawList <> nil then
+    screenUpdate(FFlowchart_Manager,pbMain);
+end;
+
+procedure TFFlowChart_Manager.RecTreeConstructor(const shift: Integer; TempTreeStructure: PTreeStructure);
 var
   i: Integer;
   tempI: Integer;
@@ -220,35 +261,26 @@ begin
     end;
 end;
 
-procedure TFlowchart_Manager.scrMainMouseWheelUp(Sender: TObject;
+procedure TFFlowChart_Manager.scrMainMouseWheelUp(Sender: TObject;
   Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
 begin
   (Sender as TScrollBox).VertScrollBar.Position := (Sender as TScrollBox).VertScrollBar.Position - (Sender as TScrollBox).VertScrollBar.Increment;
 end;
 
-procedure TFlowchart_Manager.scrMainMouseWheelDown(Sender: TObject;
+procedure TFFlowChart_Manager.scrMainMouseWheelDown(Sender: TObject;
   Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
 begin
   (Sender as TScrollBox).VertScrollBar.Position := (Sender as TScrollBox).VertScrollBar.Position + (Sender as TScrollBox).VertScrollBar.Increment;
 end;
 
-procedure TFlowchart_Manager.btnTempClick(Sender: TObject);
-begin
-//  drawTerminator(pbMain,50,50,100,50);
-//  drawFunctionalBlock(pbMain, 50,50,100,50);
-//  drawBinaryChoice(pbMain,50,50,100,50);
-//  drawLoop(pbMain,50,50,100,50,400)
-//  drawDataBlock(pbMain,50,50,100,50);
-end;
-
-procedure TFlowchart_Manager.chkModeClick(Sender: TObject);
+procedure TFFlowChart_Manager.chkModeClick(Sender: TObject);
 begin
   if CurrMemo<>nil then
     if CurrMemo.Visible then
       CurrMemo.Visible:=false;
 end;
 
-procedure TFlowchart_Manager.CreateTree();
+procedure TFFlowChart_Manager.CreateTree();
 begin
 trMainTree.Items.Clear;
 trMainTree.Items.Add(nil, StrList[0]);
@@ -256,40 +288,40 @@ CurrentMaxNode := 0;
 RecTreeConstructor(0, TreeStructure);
 end;
 
-procedure TFlowchart_Manager.fileOpenExecute(Sender: TObject);
+procedure TFFlowChart_Manager.fileOpenExecute(Sender: TObject);
 begin
 
   dlgOpenFile.Filter := 'Pascal files (*.pas, *.dpr)|*.PAS;*.DPR| Text files (*.txt)|*.TXT|';
   if dlgOpenFile.Execute then
   begin
     CurrentFile := dlgOpenFile.FileName;
-    clearScreen(Flowchart_Manager,pbMain);
+    clearScreen(FFlowchart_Manager,pbMain);
     TreeStructure := nil;
     StartRoutine();
 
     CreatingDataModel();
     createtree;
 
-    clearScreen(Flowchart_Manager,pbMain);
+    clearScreen(FFlowchart_Manager,pbMain);
     if TreeStructure <> nil then
-      CreatingDrawModel(Flowchart_Manager, pbMain);
+      CreatingDrawModel(FFlowchart_Manager, pbMain);
 
     fileSavePNG.Enabled:=true;
     fileSaveBMP.Enabled:=true;
   end;
 end;
 
-procedure TFlowchart_Manager.fileSaveBMPExecute(Sender: TObject);
+procedure TFFlowChart_Manager.fileSaveBMPExecute(Sender: TObject);
 begin
   saveBMPFile;
 end;
 
-procedure TFlowchart_Manager.fileSavePNGExecute(Sender: TObject);
+procedure TFFlowChart_Manager.fileSavePNGExecute(Sender: TObject);
 begin
   savePNGFile;
 end;
 
-procedure TFlowchart_Manager.StartRoutine();
+procedure TFFlowChart_Manager.StartRoutine();
 var
   S,tmpS:string;
   Posit:Integer;
@@ -319,7 +351,8 @@ while not Eof(FileUsed) do
     begin
       Posit:=AnsiPos('{', S);
       Delete(S,Posit,length(s)-Posit+1);
-      StrList.Add(S);
+ //     if Trim(s) <> '' then
+        StrList.Add(S);
       repeat
       Readln(FileUsed,S)
       until  (AnsiPos('', S) = 0) or Eof(FileUsed);
@@ -329,14 +362,14 @@ while not Eof(FileUsed) do
 
   Posit:=AnsiPos('//', S);
   Delete(S,Posit,length(s)-Posit+1);
-
-  StrList.Add(S);
+ // if Trim(s) <> '' then
+    StrList.Add(S);
   end;
 
 CloseFile(FileUsed);
 end;
 
-function TFlowchart_Manager.saveFile(mode: TFileMode):string;
+function TFFlowChart_Manager.saveFile(mode: TFileMode):string;
 begin
   Result := '';
   case mode of
@@ -366,7 +399,7 @@ begin
 
 end;
 
-procedure TFlowchart_Manager.saveBMPFile;
+procedure TFFlowChart_Manager.saveBMPFile;
 var
   path: string;
   oldScale: real;
@@ -396,7 +429,7 @@ begin
   end;
 end;
 
-procedure TFlowchart_Manager.savePNGFile;
+procedure TFFlowChart_Manager.savePNGFile;
 var
   path: string;
   oldScale: real;

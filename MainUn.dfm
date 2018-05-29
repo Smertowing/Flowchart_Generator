@@ -1,8 +1,8 @@
-object Flowchart_Manager: TFlowchart_Manager
+object FFlowChart_Manager: TFFlowChart_Manager
   Left = 0
   Top = 0
   Caption = 'Flowchart_Manager'
-  ClientHeight = 547
+  ClientHeight = 447
   ClientWidth = 976
   Color = clBtnFace
   DoubleBuffered = True
@@ -20,7 +20,7 @@ object Flowchart_Manager: TFlowchart_Manager
     Left = 0
     Top = 0
     Width = 361
-    Height = 547
+    Height = 447
     Align = alLeft
     Color = clWhite
     ParentBackground = False
@@ -46,21 +46,11 @@ object Flowchart_Manager: TFlowchart_Manager
         03010000001E0000000000000000000000FFFFFFFFFFFFFFFF00000000000000
         00000000000100}
     end
-    object btnTemp: TButton
-      Left = 8
-      Top = 204
-      Width = 75
-      Height = 25
-      Caption = 'Test'
-      TabOrder = 1
-      Visible = False
-      OnClick = btnTempClick
-    end
     object reMainEdit: TRichEdit
       Left = 1
-      Top = 237
+      Top = 254
       Width = 359
-      Height = 309
+      Height = 192
       Align = alClient
       Font.Charset = RUSSIAN_CHARSET
       Font.Color = clWindowText
@@ -72,24 +62,29 @@ object Flowchart_Manager: TFlowchart_Manager
       ParentFont = False
       ReadOnly = True
       ScrollBars = ssVertical
-      TabOrder = 2
+      TabOrder = 1
       Zoom = 100
+      ExplicitTop = 237
+      ExplicitHeight = 209
     end
     object chkMode: TCheckBox
-      Left = 274
-      Top = 212
-      Width = 81
+      Left = 1
+      Top = 237
+      Width = 359
       Height = 17
+      Align = alTop
       Caption = 'Editor Mode'
-      TabOrder = 3
+      TabOrder = 2
       OnClick = chkModeClick
+      ExplicitLeft = 343
+      ExplicitWidth = 209
     end
   end
   object scrMain: TScrollBox
     Left = 361
     Top = 0
     Width = 615
-    Height = 547
+    Height = 447
     HorzScrollBar.ButtonSize = 10
     VertScrollBar.ButtonSize = 20
     VertScrollBar.ParentColor = False
@@ -100,12 +95,13 @@ object Flowchart_Manager: TFlowchart_Manager
     TabOrder = 1
     OnMouseWheelDown = scrMainMouseWheelDown
     OnMouseWheelUp = scrMainMouseWheelUp
-    ExplicitLeft = 366
     object pbMain: TPaintBox
       Left = 5
       Top = 0
       Width = 0
       Height = 0
+      ParentShowHint = False
+      ShowHint = True
       OnClick = pbMainClick
       OnDblClick = pbMainDblClick
       OnPaint = pbMainPaint

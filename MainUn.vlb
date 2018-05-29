@@ -19,9 +19,6 @@ Coordinates=80,146,57,36
 [fileSaveBMP]
 Coordinates=326,56,88,36
 
-[btnTemp]
-Coordinates=91,78,65,58
-
 [scrMain]
 Coordinates=10,146,60,36
 
@@ -59,6 +56,6 @@ Coordinates=452,111,95,36
 Coordinates=40,226,74,36
 
 []
-Coordinates=134,10,114,58
+Coordinates=91,78,65,58
 Visible=True
 
