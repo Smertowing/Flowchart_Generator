@@ -7,6 +7,7 @@ interface
        Vcl.ExtCtrls;
 
   procedure CreatingDrawModel(Form: TForm; paintBox: TPaintBox);
+<<<<<<< HEAD
   procedure FindAndBlue(x,y:integer; var a,b:Integer);
   procedure FindBranch(x,y:Integer; var a,b: integer; var Str:string);
   procedure FindBranchAndResetCaption(x,y:Integer; str:string);
@@ -14,6 +15,8 @@ interface
   procedure RestoreDafault;
   procedure ChangeChildrenState(x,y:integer);
   procedure EraseDrawList(var DList: PDrawList);
+=======
+>>>>>>> parent of 6caa123... Final countdown!
 
 implementation
 
@@ -32,6 +35,7 @@ begin
 //  DrawUnit^.next := nil;
   DrawUnit^.branch := nil;
   DrawUnit^.structure := Another;
+<<<<<<< HEAD
   DrawUnit^.x := -1000;
   DrawUnit^.y := -1000;
   DrawUnit^.color := clBlack;
@@ -50,6 +54,8 @@ begin
       Inc(i);
     end;
   Dispose(DList);
+=======
+>>>>>>> parent of 6caa123... Final countdown!
 end;
 
 procedure DeclStruct(var Structure: TStructuresList; i: integer);
@@ -124,83 +130,6 @@ begin
   paintBox.Height := tempHeight;
 end;
 
-procedure RestoreDafault();
-
-procedure RestoreDefaultRec(var DList:PDrawList);
-var
-  k:Integer;
-begin
-  K:=0;
-  if DList^.chAvailable then
-    while  k <= DList^.NumberOfChildren-1 do
-    begin
-      RestoreDefaultRec(DList^.children[k]);
-      Inc(k);
-    end;
-  Dlist^.color := clBlack;
-end;
-
-begin
-  RestoreDefaultRec(DrawList);
-end;
-
-procedure FindAndBlue(x,y:integer; var a,b:Integer);
-
-procedure FindAndBlueDrawList(var DList:PDrawList; x,y:integer);
-var
-  k:Integer;
-begin
-  K:=0;
-  if DList^.chAvailable then
-    while  k <= DList^.NumberOfChildren-1 do
-    begin
-      FindAndBlueDrawList(DList^.children[k], x, y);
-      Inc(k);
-    end;
-
-  if (x >= DList^.x) and (x<= Dlist^.x + basicWidth) and (((y>= Dlist^.y) and (y<= Dlist^.y + basicHeight)) or
-  (y>= Dlist^.y + Dlist^.space) and (y<= Dlist^.y + Dlist^.space + basicHeight))  then
-    begin
-      Dlist^.color := clBlue;
-      a:=DList^.branch^.DeclarationLine;
-      b:=DList^.branch^.EndLine;
-    end;
-end;
-
-begin
-  FindAndBlueDrawList(DrawList,x,y);
-end;
-
-procedure changeChildrenState(x,y:integer);
-
-procedure changeChildrenStateRec(var DList:PDrawList; x,y:integer);
-var
-  k:Integer;
-begin
-  K:=0;
-  if DList^.chAvailable then
-    while  k <= DList^.NumberOfChildren-1 do
-    begin
-      changeChildrenStateRec(DList^.children[k], x, y);
-      Inc(k);
-    end;
-
-  if (x >= DList^.x) and (x<= Dlist^.x + basicWidth) and (((y>= Dlist^.y) and (y<= Dlist^.y + basicHeight)) or
-  (y>= Dlist^.y + Dlist^.space) and (y<= Dlist^.y + Dlist^.space + basicHeight))  then
-    begin
-      if DList^.chAvailable then
-        DList^.chAvailable := False
-      else
-        begin
-          if DList^.numberOfChildren <> 0 then
-            DList^.chAvailable := True;
-        end;
-    end;
-end;
-
-begin
-  changeChildrenStateRec(DrawList,x,y);
-end;
 
 procedure FindBranch(x,y:Integer; var a,b: integer; var Str:string);
 

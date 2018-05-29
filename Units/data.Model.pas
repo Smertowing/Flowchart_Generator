@@ -259,26 +259,8 @@ if checkStr(Str, 'procedure') or checkStr(Str,'function')  then  skipToAfterFP(C
 
     end
   else
-    begin
-      if (checkStr(NextTreeNode^.BlockName, 'for') or checkStr(NextTreeNode^.BlockName, 'while')) and (NextTreeNode^.NumberOfChildren = 0)  then
-      begin
-        NextTreeNode^.EndLine := CurrentLine-1;
-
-        Inc(NextTreeNode^.NumberOfChildren);
-        SetLength(NextTreeNode^.Children, NextTreeNode^.NumberOfChildren);
-        TempTreeNode := CreateNode;
-        TempTreeNode^.BlockName := 'code';
-        TempTreeNode^.DeclarationLine := NextTreeNode^.DeclarationLine + 1;
-        TempTreeNode^.EndLine := CurrentLine-1;
-        TempTreeNode^.NumberOfChildren := 0;
-        SetLength(TempTreeNode^.Children, 0);
-        NextTreeNode^.Children[NextTreeNode^.NumberOfChildren - 1] := TempTreeNode;
-      end
-      else
-      NextTreeNode^.EndLine := CurrentLine-1;
-    end;
+    NextTreeNode^.EndLine := CurrentLine-1;
   CurrentTreeNode^.Children[CurrentTreeNode^.NumberOfChildren - 1] := NextTreeNode;
-
 end;
 
 procedure checkBegin(const Str: string; var CurrentTreeNode: PTreeStructure);
@@ -337,32 +319,35 @@ begin
 
 
     checkBegin(StrList[CurrentLine], CurrentTreeNode);
-    if (checkStr(CurrentTreeNode^.BlockName,'for') or checkStr(CurrentTreeNode^.BlockName,'while')) and (CurrentTreeNode^.DeclarationLine = CurrentLine-1) and checkEnd(StrList[currentLine], CurrentTreeNode) then
+    if DT1 then
       begin
-      canILeave:=True;
-      inc(currentLine);
+      //if checkTrueEnd(StrList[CurrentLine], CurrentTreeNode, DT1) then
+      if checkStr(StrList[CurrentLine], 'end') or checkStr(StrList[CurrentLine], 'end.') then
+        begin
+        canILeave := True;
+        Dec(DT1);
+        end
+      else
+        Inc(CurrentLine);
       end
     else
       begin
-
-      if checkStr(CurrentTreeNode^.BlockName,'if') and (CurrentTreeNode^.NumberOfChildren = 3) then
-        canILeave:=True
-      else
+      if DT2 then
         begin
-
-        if DT1 then
+        if checkStr(StrList[CurrentLine],'until') then
           begin
-          //if checkTrueEnd(StrList[CurrentLine], CurrentTreeNode, DT1) then
-          if checkStr(StrList[CurrentLine], 'end') or checkStr(StrList[CurrentLine], 'end.') then
-            begin
-            canILeave := True;
-            Dec(DT1);
-            end
-          else
-            Inc(CurrentLine);
-          end
+          canILeave := True;
+          Dec(DT2);
+          end;
+        Inc(CurrentLine);
+        end
+        else
+        begin
+        if CurrentLine = StrList.Count-1 then
+          CanILeave := True
         else
           begin
+<<<<<<< HEAD
           if DT2 then
             begin
             if checkStr(StrList[CurrentLine],'until') then
@@ -390,6 +375,12 @@ begin
 
               end;
             end;
+=======
+          if not DT1 and not DT2 and not(checkStr(StrList[CurrentLine+1], 'else')) then
+            if checkEnd(StrList[CurrentLine], CurrentTreeNode)then
+              CanILeave := True;
+          Inc(CurrentLine);
+>>>>>>> parent of 6caa123... Final countdown!
           end;
         end;
       end;

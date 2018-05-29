@@ -2,8 +2,13 @@ object FFlowChart_Manager: TFFlowChart_Manager
   Left = 0
   Top = 0
   Caption = 'Flowchart_Manager'
+<<<<<<< HEAD
   ClientHeight = 447
   ClientWidth = 976
+=======
+  ClientHeight = 370
+  ClientWidth = 958
+>>>>>>> parent of 6caa123... Final countdown!
   Color = clBtnFace
   DoubleBuffered = True
   Font.Charset = DEFAULT_CHARSET
@@ -20,7 +25,11 @@ object FFlowChart_Manager: TFFlowChart_Manager
     Left = 0
     Top = 0
     Width = 361
+<<<<<<< HEAD
     Height = 447
+=======
+    Height = 370
+>>>>>>> parent of 6caa123... Final countdown!
     Align = alLeft
     Color = clWhite
     ParentBackground = False
@@ -46,6 +55,7 @@ object FFlowChart_Manager: TFFlowChart_Manager
         03010000001E0000000000000000000000FFFFFFFFFFFFFFFF00000000000000
         00000000000100}
     end
+<<<<<<< HEAD
     object reMainEdit: TRichEdit
       Left = 1
       Top = 254
@@ -78,13 +88,37 @@ object FFlowChart_Manager: TFFlowChart_Manager
       OnClick = chkModeClick
       ExplicitLeft = 343
       ExplicitWidth = 209
+=======
+    object mmoMainMemo: TMemo
+      Left = 1
+      Top = 237
+      Width = 359
+      Height = 132
+      Align = alClient
+      ScrollBars = ssVertical
+      TabOrder = 1
+    end
+    object btnTemp: TButton
+      Left = 280
+      Top = 206
+      Width = 75
+      Height = 25
+      Caption = 'Test'
+      TabOrder = 2
+      OnClick = btnTempClick
+>>>>>>> parent of 6caa123... Final countdown!
     end
   end
   object scrMain: TScrollBox
     Left = 361
     Top = 0
+<<<<<<< HEAD
     Width = 615
     Height = 447
+=======
+    Width = 597
+    Height = 370
+>>>>>>> parent of 6caa123... Final countdown!
     HorzScrollBar.ButtonSize = 10
     VertScrollBar.ButtonSize = 20
     VertScrollBar.ParentColor = False
@@ -100,6 +134,7 @@ object FFlowChart_Manager: TFFlowChart_Manager
       Top = 0
       Width = 0
       Height = 0
+<<<<<<< HEAD
       ParentShowHint = False
       ShowHint = True
       OnClick = pbMainClick
@@ -109,6 +144,13 @@ object FFlowChart_Manager: TFFlowChart_Manager
     object mmoInput: TMemo
       Left = 514
       Top = 515
+=======
+      OnPaint = pbMainPaint
+    end
+    object mmoInput: TMemo
+      Left = 496
+      Top = 320
+>>>>>>> parent of 6caa123... Final countdown!
       Width = 98
       Height = 49
       Font.Charset = DEFAULT_CHARSET

@@ -12,6 +12,7 @@ type
   TFFlowChart_Manager = class(TForm)
     pnlMemoTree: TPanel;
     trMainTree: TTreeView;
+    mmoMainMemo: TMemo;
     splMemoTree: TSplitter;
     MainMenu: TMainMenu;
     scrMain: TScrollBox;
@@ -27,9 +28,12 @@ type
     fileSaveBMP1: TMenuItem;
     dlgSaveFlowchart: TSaveDialog;
     mmoInput: TMemo;
+<<<<<<< HEAD
     reMainEdit: TRichEdit;
     N1: TMenuItem;
     chkMode: TCheckBox;
+=======
+>>>>>>> parent of 6caa123... Final countdown!
     procedure StartRoutine();
     procedure createtree();
     procedure FormDestroy(Sender: TObject);
@@ -46,6 +50,7 @@ type
     procedure saveBMPFile;
     procedure fileSavePNGExecute(Sender: TObject);
     procedure fileSaveBMPExecute(Sender: TObject);
+<<<<<<< HEAD
     procedure pbMainDblClick(Sender: TObject);
     procedure pbMainClick(Sender: TObject);
     procedure keyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -53,6 +58,8 @@ type
 {    procedure pbMainMouseMove(Sender: TObject; Shift: TShiftState; X,
       Y: Integer);
     procedure pbMainMouseLeave(Sender: TObject);          }
+=======
+>>>>>>> parent of 6caa123... Final countdown!
   private
     { Private declarations }
   public
@@ -76,6 +83,7 @@ begin
 strList.Free;
 if TreeStructure <> nil then
   EraseTree(TreeStructure);
+<<<<<<< HEAD
 if DrawList <> nil then
   EraseDrawList(DrawList);
 end;
@@ -226,6 +234,8 @@ end;
 procedure TFlowchart_Manager.pbMainMouseLeave(Sender: TObject);
 begin
   OnMouseProc:=False;
+=======
+>>>>>>> parent of 6caa123... Final countdown!
 end;
 
 procedure TFlowchart_Manager.pbMainMouseMove(Sender: TObject;
@@ -238,7 +248,12 @@ end;
 procedure TFFlowChart_Manager.pbMainPaint(Sender: TObject);
 begin
   if DrawList <> nil then
+<<<<<<< HEAD
     screenUpdate(FFlowchart_Manager,pbMain);
+=======
+    screenUpdate(Flowchart_Manager,pbMain);
+
+>>>>>>> parent of 6caa123... Final countdown!
 end;
 
 procedure TFFlowChart_Manager.RecTreeConstructor(const shift: Integer; TempTreeStructure: PTreeStructure);
@@ -257,8 +272,10 @@ begin
       tempI := CurrentMaxNode;
       RecTreeConstructor(tempI, TempTreeStructure^.Children[i-1]);
       end;
+
     inc(i);
     end;
+
 end;
 
 procedure TFFlowChart_Manager.scrMainMouseWheelUp(Sender: TObject;
@@ -290,11 +307,9 @@ end;
 
 procedure TFFlowChart_Manager.fileOpenExecute(Sender: TObject);
 begin
-
-  dlgOpenFile.Filter := 'Pascal files (*.pas, *.dpr)|*.PAS;*.DPR| Text files (*.txt)|*.TXT|';
   if dlgOpenFile.Execute then
-  begin
     CurrentFile := dlgOpenFile.FileName;
+<<<<<<< HEAD
     clearScreen(FFlowchart_Manager,pbMain);
     TreeStructure := nil;
     StartRoutine();
@@ -309,6 +324,20 @@ begin
     fileSavePNG.Enabled:=true;
     fileSaveBMP.Enabled:=true;
   end;
+=======
+  clearScreen(Flowchart_Manager,pbMain);
+  TreeStructure := nil;
+  StartRoutine();
+  CreatingDataModel();
+  createtree;
+
+  clearScreen(Flowchart_Manager,pbMain);
+  if TreeStructure <> nil then
+    CreatingDrawModel(Flowchart_Manager, pbMain);
+
+  fileSavePNG.Enabled:=true;
+  fileSaveBMP.Enabled:=true;
+>>>>>>> parent of 6caa123... Final countdown!
 end;
 
 procedure TFFlowChart_Manager.fileSaveBMPExecute(Sender: TObject);
@@ -321,14 +350,20 @@ begin
   savePNGFile;
 end;
 
+<<<<<<< HEAD
 procedure TFFlowChart_Manager.StartRoutine();
 var
   S,tmpS:string;
   Posit:Integer;
+=======
+procedure TFlowchart_Manager.StartRoutine();
+var   S:string;
+>>>>>>> parent of 6caa123... Final countdown!
 begin
-reMainEdit.Lines.Clear;
+mmoMainMemo.Lines.Clear;
+
 if FileExists(currentFile) then
-  reMainEdit.Lines. LoadFromFile(currentFile);
+  mmoMainMemo.Lines. LoadFromFile(currentFile);
 
 AssignFile(FileUsed, currentFile);
 Reset(FileUsed);
@@ -340,6 +375,7 @@ StrList.Duplicates:=dupAccept;
 while not Eof(FileUsed) do
   begin
   Readln(FileUsed, S);
+<<<<<<< HEAD
 {  if checkStr(S,'exit') or checkStr(S,'break') or checkStr(S,'continue') or checkStr(S,'case')then
     begin
     ShowMessage('Warning! Non-structural algorithm');
@@ -364,6 +400,9 @@ while not Eof(FileUsed) do
   Delete(S,Posit,length(s)-Posit+1);
  // if Trim(s) <> '' then
     StrList.Add(S);
+=======
+  StrList.Add(S)
+>>>>>>> parent of 6caa123... Final countdown!
   end;
 
 CloseFile(FileUsed);
