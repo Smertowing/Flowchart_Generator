@@ -80,9 +80,13 @@ for j := 1 to N do
     begin
     ChoosenPosition(i,j);
     if i < N then
+	begin
       MainAlignment(i+1)
+	end
     else
+	begin
       PrintBoard(QueenS);
+	end;
     Remove(i,j);
     end;
 end;
