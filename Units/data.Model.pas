@@ -195,7 +195,7 @@ begin
     end;
 
   if CurrentTreeNode^.BlockName <> '' then
-  if not (checkStr(CurrentTreeNode^.BlockName, 'procedure')) and not (checkStr(CurrentTreeNode^.BlockName, 'function')) and not (checkStr(CurrentTreeNode^.BlockName, 'implementation')) then
+  if not (checkStr(CurrentTreeNode^.BlockName, 'procedure')) and not (checkStr(CurrentTreeNode^.BlockName, 'function')) and not (checkStr(CurrentTreeNode^.BlockName, 'implementation')) and not (checkStr(CurrentTreeNode^.BlockName, 'program')) then
   if (CurrentTreeNode^.NumberOfChildren = 0) and (CurrentLine - CurrentTreeNode^.DeclarationLine > 1) then
     begin
       Inc(CurrentTreeNode^.NumberOfChildren);
@@ -259,8 +259,26 @@ if checkStr(Str, 'procedure') or checkStr(Str,'function')  then  skipToAfterFP(C
 
     end
   else
-    NextTreeNode^.EndLine := CurrentLine-1;
+    begin
+      if (checkStr(NextTreeNode^.BlockName, 'for') or checkStr(NextTreeNode^.BlockName, 'while')) and (NextTreeNode^.NumberOfChildren = 0)  then
+      begin
+        NextTreeNode^.EndLine := CurrentLine-1;
+
+        Inc(NextTreeNode^.NumberOfChildren);
+        SetLength(NextTreeNode^.Children, NextTreeNode^.NumberOfChildren);
+        TempTreeNode := CreateNode;
+        TempTreeNode^.BlockName := 'code';
+        TempTreeNode^.DeclarationLine := NextTreeNode^.DeclarationLine + 1;
+        TempTreeNode^.EndLine := CurrentLine-1;
+        TempTreeNode^.NumberOfChildren := 0;
+        SetLength(TempTreeNode^.Children, 0);
+        NextTreeNode^.Children[NextTreeNode^.NumberOfChildren - 1] := TempTreeNode;
+      end
+      else
+      NextTreeNode^.EndLine := CurrentLine-1;
+    end;
   CurrentTreeNode^.Children[CurrentTreeNode^.NumberOfChildren - 1] := NextTreeNode;
+
 end;
 
 procedure checkBegin(const Str: string; var CurrentTreeNode: PTreeStructure);
@@ -317,37 +335,36 @@ begin
       inc(tempCicle);
       end;
 
-
     checkBegin(StrList[CurrentLine], CurrentTreeNode);
-    if DT1 then
+    if (checkStr(CurrentTreeNode^.BlockName,'for') or checkStr(CurrentTreeNode^.BlockName,'while')) and (CurrentTreeNode^.DeclarationLine = CurrentLine-1) and checkEnd(StrList[currentLine], CurrentTreeNode) then
       begin
-      //if checkTrueEnd(StrList[CurrentLine], CurrentTreeNode, DT1) then
-      if checkStr(StrList[CurrentLine], 'end') or checkStr(StrList[CurrentLine], 'end.') then
-        begin
-        canILeave := True;
-        Dec(DT1);
-        end
-      else
-        Inc(CurrentLine);
+      canILeave:=True;
+      inc(currentLine);
       end
     else
       begin
-      if DT2 then
+
+      if checkStr(CurrentTreeNode^.BlockName,'if') and (CurrentTreeNode^.NumberOfChildren = 3) then
         begin
-        if checkStr(StrList[CurrentLine],'until') then
-          begin
-          canILeave := True;
-          Dec(DT2);
-          end;
-        Inc(CurrentLine);
+        canILeave:=True;
+        Inc(currentline);
         end
-        else
+      else
         begin
-        if CurrentLine = StrList.Count-1 then
-          CanILeave := True
+
+        if DT1 then
+          begin
+          //if checkTrueEnd(StrList[CurrentLine], CurrentTreeNode, DT1) then
+          if checkStr(StrList[CurrentLine], 'end') or checkStr(StrList[CurrentLine], 'end.') then
+            begin
+            canILeave := True;
+            Dec(DT1);
+            end
+          else
+            Inc(CurrentLine);
+          end
         else
           begin
-<<<<<<< HEAD
           if DT2 then
             begin
             if checkStr(StrList[CurrentLine],'until') then
@@ -375,12 +392,6 @@ begin
 
               end;
             end;
-=======
-          if not DT1 and not DT2 and not(checkStr(StrList[CurrentLine+1], 'else')) then
-            if checkEnd(StrList[CurrentLine], CurrentTreeNode)then
-              CanILeave := True;
-          Inc(CurrentLine);
->>>>>>> parent of 6caa123... Final countdown!
           end;
         end;
       end;
@@ -409,11 +420,12 @@ end;
 
 procedure CreatingDataModel();
 begin
-  CurrentLine := 1;
+  CurrentLine := 0;
   DN1 := false;
   DN2 := false;
   SkipToStart(CurrentLine);
   TempTreeStructure := CreateNode;
+  TempTreeStructure.BlockName := StrList[0];
   StringListSeek(TempTreeStructure, DN1, DN2);
   HealTreeStructure(TempTreeStructure);
   TreeStructure := TempTreeStructure;

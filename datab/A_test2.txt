@@ -1,3 +1,4 @@
+program test2;
 procedure SortStr(Size: integer; var SA: TMasRe);
 var t,i,steps,j,m:integer;
     tmp:TRecord;
@@ -6,29 +7,30 @@ begin
   for i:=1 to t do
   begin
 	if true then
-	begin
-        SA[M+steps] := SA[m];
-	if kek then
-		begin
-		kek;
-		lol
-		end
-		else
-		begin
-		kek;
-		lol;
-		end;
-	end;
+  	begin
+      SA[M+steps] := SA[m];
+  	   if kek then
+      		begin
+      		kek;
+      		lol
+      		end
+  		  else
+      		begin
+      		kek;
+      		lol;
+      		end;
+        mem;
+  	end
 	else
-	begin
+  	begin
         m:=m-steps;
-	end;
+  	end;
 	if kek then
 		begin
 		kek;
 		lol
 		end
-		else
+	else
 		begin
 		kek;
 		lol;

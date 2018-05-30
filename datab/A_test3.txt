@@ -1,4 +1,4 @@
-kekProg;
+program kekProg;
 procedure stringBinSearch(N:Integer; elem:string; var Mas:TMasRe);
 var
   left,right,middle,sought:integer;

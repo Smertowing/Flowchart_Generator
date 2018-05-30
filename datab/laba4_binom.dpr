@@ -1,7 +1,4 @@
 program laba4_binom;
-
-{$APPTYPE CONSOLE}
-
 var n,k:integer;
 
 function Recursion(k,n : integer) : int64;

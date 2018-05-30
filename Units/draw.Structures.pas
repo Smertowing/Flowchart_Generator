@@ -6,25 +6,17 @@ interface
        Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.StdCtrls, Vcl.ComCtrls,
        Vcl.ExtCtrls, System.Actions, Vcl.ActnList;
 
-<<<<<<< HEAD
   procedure drawTerminator(Canv:TCanvas; x,y,width,height, space:Integer; caption:string; color:TColor);
   procedure drawFunctionalBlock(Canv:TCanvas; x,y,width,height,space:Integer; caption:string; color:TColor);
   procedure drawPredefinedBlock(Canv:TCanvas; x,y,width,height,space:Integer; caption:string; color:TColor);
   procedure drawBinaryChoice(Canv:TCanvas; x,y,width,height,space:Integer; caption:string; color:TColor);
   procedure drawDataBlock(Canv:TCanvas; x,y,width,height,space:Integer; caption:string; color:TColor);
   procedure drawLoop(Canv:TCanvas; x,y,width,height, space:Integer; caption:string; color:TColor);
-=======
-  procedure drawTerminator(Canv:TCanvas; x,y,width,height, space:Integer; caption:string);
-  procedure drawFunctionalBlock(Canv:TCanvas; x,y,width,height,space:Integer; caption:string);
-  procedure drawBinaryChoice(Canv:TCanvas; x,y,width,height,space:Integer; caption:string);
-  procedure drawDataBlock(Canv:TCanvas; x,y,width,height,space:Integer; caption:string);
-  procedure drawLoop(Canv:TCanvas; x,y,width,height, space:Integer; caption:string);
->>>>>>> parent of 6caa123... Final countdown!
   procedure drawLine(Canv:TCanvas; x1,y1,x2,y2:Integer);
 
 implementation
 
-procedure drawTerminator(Canv:TCanvas; x,y,width,height, space:Integer; caption:string);
+procedure drawTerminator(Canv:TCanvas; x,y,width,height, space:Integer; caption:string; color:TColor);
 var R:Integer;
     S:string;
     i:integer;
@@ -46,28 +38,22 @@ begin
   R:=round(height/2);
   with Canv do
     begin
-<<<<<<< HEAD
       Pen.Width := 2;
       Pen.Color := color;
-=======
->>>>>>> parent of 6caa123... Final countdown!
       Arc(x,y,x+height,y+height,x+R,y,x+R,y+height);
       Arc(x+width-height,y,x+width,y+height,x+width-R,y+height,x+width-R,y);
       MoveTo(x+r,y);
       LineTo(x+width-r,y);
       MoveTo(x+r,y+height);
       LineTo(x+width-r,y+height);
-      TextOut((x + Width div 2)-(canv.TextWidth('begin') div 2), y+(height div 2)-20, 'begin');
-      TextOut((x + Width div 2)-(canv.TextWidth(caption) div 2), y+(height div 2)-10, caption);
+      TextOut((x + Width div 2)-(canv.TextWidth('begin') div 2), y+(height div 2)-30, 'begin');
+      TextOut((x + Width div 2)-(canv.TextWidth(caption) div 2), y+(height div 2), caption);
     end;
   y := y+space;
   with Canv do
     begin
-<<<<<<< HEAD
       Pen.Width := 2;
       Pen.Color := color;
-=======
->>>>>>> parent of 6caa123... Final countdown!
       Arc(x,y,x+height,y+height,x+R,y,x+R,y+height);
       Arc(x+width-height,y,x+width,y+height,x+width-R,y+height,x+width-R,y);
       MoveTo(x+r,y);
@@ -78,14 +64,10 @@ begin
     end;
 end;
 
-<<<<<<< HEAD
 procedure drawFunctionalBlock(Canv:TCanvas; x,y,width,height, space:Integer; caption:string; color:TColor);
 var
   S:string;
   i:Integer;
-=======
-procedure drawFunctionalBlock(Canv:TCanvas; x,y,width,height, space:Integer; caption:string);
->>>>>>> parent of 6caa123... Final countdown!
 begin
   if Canv.TextWidth(caption) > Round(Width*0.9) then
     begin
@@ -104,11 +86,8 @@ begin
   y := y+space;
   with Canv do
     begin
-<<<<<<< HEAD
       Pen.Width := 2;
       Pen.Color := color;
-=======
->>>>>>> parent of 6caa123... Final countdown!
       MoveTo(x,y);
       LineTo(x+width,y);
       LineTo(x+width,y+height);
@@ -118,7 +97,6 @@ begin
     end;
 end;
 
-<<<<<<< HEAD
 procedure drawPredefinedBlock(Canv:TCanvas; x,y,width,height, space:Integer; caption:string; color:TColor);
 var
   S:string;
@@ -157,9 +135,6 @@ begin
 end;
 
 procedure drawBinaryChoice(Canv:TCanvas; x,y,width,height,space:Integer; caption:string; color:TColor);
-=======
-procedure drawBinaryChoice(Canv:TCanvas; x,y,width,height,space:Integer; caption:string);
->>>>>>> parent of 6caa123... Final countdown!
 var R1,R2:Integer;
   s:string;
   i:integer;
@@ -182,11 +157,8 @@ begin
   R2:=Round(width/2);
   with Canv do
     begin
-<<<<<<< HEAD
       Pen.Width := 2;
       Pen.Color := color;
-=======
->>>>>>> parent of 6caa123... Final countdown!
       MoveTo(x+R2,y);
       LineTo(x+width,y+R1);
       LineTo(x+R2,y+height);
@@ -199,7 +171,7 @@ begin
     end;
 end;
 
-procedure drawDataBlock(Canv:TCanvas; x,y,width,height,space:Integer; caption:string);
+procedure drawDataBlock(Canv:TCanvas; x,y,width,height,space:Integer; caption:string; color:TColor);
 var R:Integer;
     S:string;
     i:integer;
@@ -233,12 +205,11 @@ begin
     end;
 end;
 
-procedure drawLoop(Canv:TCanvas; x,y,width,height, space:Integer; caption:string);
+procedure drawLoop(Canv:TCanvas; x,y,width,height, space:Integer; caption:string; color:TColor);
 var R1,R2:Integer;
     S:string;
     i:integer;
 begin
-<<<<<<< HEAD
   if Canv.TextWidth(caption) > Round(Width*0.9) then
     begin
       S:='';
@@ -253,17 +224,12 @@ begin
       Caption:=S;
     end;
 
-=======
->>>>>>> parent of 6caa123... Final countdown!
   R1:=Round(height/4);
   R2:=Round(width/4);
   with Canv do
     begin
-<<<<<<< HEAD
       Pen.Width := 2;
       Pen.Color := color;
-=======
->>>>>>> parent of 6caa123... Final countdown!
       MoveTo(x+R2,y);
       LineTo(x+width-R2,y);
       LineTo(x+width,y+R1);
@@ -277,11 +243,8 @@ begin
   y:= y + space;
   with Canv do
     begin
-<<<<<<< HEAD
       Pen.Width := 2;
       Pen.Color := color;
-=======
->>>>>>> parent of 6caa123... Final countdown!
       MoveTo(x,y);
       LineTo(x+width,y);
       LineTo(x+width,y+height-R1);
@@ -295,11 +258,8 @@ end;
 
 procedure drawLine(Canv:TCanvas; x1,y1,x2,y2:Integer);
 begin
-<<<<<<< HEAD
   Canv.Pen.Color := clBlack;
   Canv.Pen.Width := 2;
-=======
->>>>>>> parent of 6caa123... Final countdown!
   if (x1=x2) or (y1=y2) then
     with Canv do
       begin

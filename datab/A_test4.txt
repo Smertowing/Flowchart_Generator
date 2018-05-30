@@ -1,4 +1,4 @@
-kekprog;
+program  test4;
 procedure intBinSearch(N,elem:Integer; var Mas:TMasRe);
 var
   left,right,middle,sought,tmpindx :integer;
@@ -11,19 +11,20 @@ begin
     middle := (left + right) div 2;
     Mas[middle].BoolF := true;
     if ((Mas[middle].numb) = elem) then
-    begin
-    sought:= middle;
-    left := right + 1;
-    end
+      begin
+      sought:= middle;
+      left := right + 1;
+      end
     else
-    if (Mas[middle].numb > elem) then
-	begin
-      right := middle - 1
-	end
-    else
-	begin
-      left := middle +1;
-	end;
+      if (Mas[middle].numb > elem) then
+      	begin
+            right := middle - 1
+      	end
+      else
+      	begin
+            left := middle +1;
+      	end;
+  end;
 end;
 
   if (sought = -1) then
