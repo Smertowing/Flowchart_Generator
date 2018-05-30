@@ -368,7 +368,7 @@ while not Eof(FileUsed) do
   begin
   repeat
   Readln(FileUsed, S);
-  until Trim(s) <>'';
+  until (Trim(s) <>'') or eof(FileUsed);
 {  if checkStr(S,'exit') or checkStr(S,'break') or checkStr(S,'continue') or checkStr(S,'case')then
     begin
     ShowMessage('Warning! Non-structural algorithm');

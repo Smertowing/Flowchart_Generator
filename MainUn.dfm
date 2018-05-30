@@ -2,7 +2,7 @@ object FFlowChart_Manager: TFFlowChart_Manager
   Left = 0
   Top = 0
   Caption = 'Flowchart_Manager'
-  ClientHeight = 449
+  ClientHeight = 429
   ClientWidth = 976
   Color = clBtnFace
   DoubleBuffered = True
@@ -20,12 +20,11 @@ object FFlowChart_Manager: TFFlowChart_Manager
     Left = 0
     Top = 0
     Width = 361
-    Height = 449
+    Height = 429
     Align = alLeft
     Color = clWhite
     ParentBackground = False
     TabOrder = 0
-    ExplicitHeight = 407
     object splMemoTree: TSplitter
       Left = 1
       Top = 235
@@ -48,7 +47,7 @@ object FFlowChart_Manager: TFFlowChart_Manager
       Left = 1
       Top = 254
       Width = 359
-      Height = 194
+      Height = 174
       Align = alClient
       Font.Charset = RUSSIAN_CHARSET
       Font.Color = clWindowText
@@ -62,7 +61,6 @@ object FFlowChart_Manager: TFFlowChart_Manager
       ScrollBars = ssVertical
       TabOrder = 1
       Zoom = 100
-      ExplicitHeight = 152
     end
     object chkMode: TCheckBox
       Left = 1
@@ -79,7 +77,7 @@ object FFlowChart_Manager: TFFlowChart_Manager
     Left = 361
     Top = 0
     Width = 615
-    Height = 449
+    Height = 429
     HorzScrollBar.ButtonSize = 10
     VertScrollBar.ButtonSize = 20
     VertScrollBar.ParentColor = False
@@ -90,7 +88,6 @@ object FFlowChart_Manager: TFFlowChart_Manager
     TabOrder = 1
     OnMouseWheelDown = scrMainMouseWheelDown
     OnMouseWheelUp = scrMainMouseWheelUp
-    ExplicitHeight = 407
     object pbMain: TPaintBox
       Left = 5
       Top = 0
