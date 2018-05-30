@@ -157,8 +157,6 @@ return:=false;
     if checkStr(StrList[n], 'interface') then
       begin
       SkipToImplement(n);
-      return:=true;
-      Dec(n);
       end;
     Inc(n);
     end;
@@ -171,7 +169,7 @@ var   NextTreeNode, TempTreeNode: PTreeStructure;
    //   tempS1, tempS2: string;
 begin
   if CurrentTreeNode^.BlockName <> '' then
-  if not (checkStr(CurrentTreeNode^.BlockName, 'procedure')) and not (checkStr(CurrentTreeNode^.BlockName, 'function')) and not (checkStr(CurrentTreeNode^.BlockName, 'implementation')) then
+  if not (checkStr(CurrentTreeNode^.BlockName, 'procedure')) and not (checkStr(CurrentTreeNode^.BlockName, 'function')) and not (checkStr(CurrentTreeNode^.BlockName, 'implementation')) and not (checkStr(CurrentTreeNode^.BlockName, 'program')) and not (checkStr(CurrentTreeNode^.BlockName, 'unit')) then
   if (CurrentTreeNode^.NumberOfChildren <> 0) then
     begin
       if (CurrentLine - CurrentTreeNode^.Children[CurrentTreeNode^.NumberOfChildren-1]^.EndLine > 1) then
@@ -195,7 +193,7 @@ begin
     end;
 
   if CurrentTreeNode^.BlockName <> '' then
-  if not (checkStr(CurrentTreeNode^.BlockName, 'procedure')) and not (checkStr(CurrentTreeNode^.BlockName, 'function')) and not (checkStr(CurrentTreeNode^.BlockName, 'implementation')) and not (checkStr(CurrentTreeNode^.BlockName, 'program')) then
+  if not (checkStr(CurrentTreeNode^.BlockName, 'procedure')) and not (checkStr(CurrentTreeNode^.BlockName, 'function')) and not (checkStr(CurrentTreeNode^.BlockName, 'implementation')) and not (checkStr(CurrentTreeNode^.BlockName, 'program')) and not (checkStr(CurrentTreeNode^.BlockName, 'unit')) then
   if (CurrentTreeNode^.NumberOfChildren = 0) and (CurrentLine - CurrentTreeNode^.DeclarationLine > 1) then
     begin
       Inc(CurrentTreeNode^.NumberOfChildren);
@@ -318,7 +316,7 @@ begin
       begin
         SkipToImplement(CurrentLine);
         SkipToAfterFP(CurrentLine);
-      end;                                     }
+      end;                                  }
     if (checkStr(StrList[CurrentLine], 'class')) or (checkStr(StrList[CurrentLine], 'record')) then
       begin
         SkipToAfterRC(CurrentLine);
@@ -330,7 +328,7 @@ begin
         if checkStr(StrList[CurrentLine], trim(StrucNames[tempCicle])) then
           begin
             NewChild(StrList[CurrentLine], CurrentTreeNode);
-            tempCicle:=1;
+            tempCicle:=0;
           end;
       inc(tempCicle);
       end;

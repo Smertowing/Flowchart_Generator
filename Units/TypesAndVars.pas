@@ -7,8 +7,8 @@ interface
     Vcl.ExtCtrls;
 
   const
-    numberOfStruc = 7;
-    StrucNames: array[1..numberOfStruc] of string[15] = ('implementation', 'procedure', 'function', 'if', 'while', 'for', 'repeat');
+    numberOfStruc = 6;
+    StrucNames: array[1..numberOfStruc] of string[15] = ({'implementation',} 'procedure', 'function', 'if', 'while', 'for', 'repeat');
 
     numberOfBlockDecl = 9;
     BlockDeclNames: array[1..numberOfBlockDecl] of string[10] = ('procedure', 'function', 'if', 'while', 'for', 'repeat', 'begin', 'code', 'else');
