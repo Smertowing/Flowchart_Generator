@@ -54,9 +54,13 @@ for i := 1 to N do
   begin
   for m := 1 to N do
     if QueenS[i] = m then
+	begin
       k[m] := 'Q'
+	end
     else
+	begin
       k[m] := ' ';
+	end;
   Writeln('| ',k[1],' | ',k[2],' | ',k[3],' | ',k[4],' | ',k[5],' | ',k[6],' | ',k[7],' | ',k[8],' |');
   Writeln('+---+---+---+---+---+---+---+---+');
   end;

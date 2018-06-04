@@ -53,6 +53,7 @@ interface
     FScale: Real;
     CurrMemo: TMemo;
     OnMouseProc: Boolean;
+    CurrMemoX,CurrMemoY: integer;
 
 implementation
 

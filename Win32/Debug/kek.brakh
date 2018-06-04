@@ -1,0 +1,45 @@
+program laba4_eight;
+	procedure Routine();
+		begin
+			code
+			for i := 1 to N do
+				code
+			for i := 2 to (N*2) do
+				code
+			for i := (1-N) to (N-1) do
+				code
+	procedure ChoosenPosition (i,j : integer);
+		begin
+			code
+	procedure PrintBoard(QueenS : TQueensArr);
+		begin
+			code
+			for i := 1 to N do
+				begin
+					for m := 1 to N do
+						if QueenS[i] = m then
+							begin
+								code
+							else
+							begin
+								code
+					code
+			code
+	procedure Remove(i,j : Integer);
+		begin
+			code
+	procedure MainAlignment(i : integer);
+		begin
+			for j := 1 to N do
+				if ColumS[j] and RDia[i+j] and LDia[j-i] then
+					begin
+						code
+						if i < N then
+							begin
+								code
+							else
+							begin
+								code
+						code
+			begin
+				code

@@ -260,7 +260,7 @@ procedure drawLine(Canv:TCanvas; x1,y1,x2,y2:Integer);
 begin
   Canv.Pen.Color := clBlack;
   Canv.Pen.Width := 2;
-  if (x1=x2) or (y1=y2) then
+  if (x1=x2) then
     with Canv do
       begin
         MoveTo(x1,y1);

@@ -2,7 +2,7 @@ object FFlowChart_Manager: TFFlowChart_Manager
   Left = 0
   Top = 0
   Caption = 'Flowchart_Manager'
-  ClientHeight = 429
+  ClientHeight = 461
   ClientWidth = 976
   Color = clBtnFace
   DoubleBuffered = True
@@ -20,7 +20,7 @@ object FFlowChart_Manager: TFFlowChart_Manager
     Left = 0
     Top = 0
     Width = 361
-    Height = 429
+    Height = 461
     Align = alLeft
     Color = clWhite
     ParentBackground = False
@@ -47,7 +47,7 @@ object FFlowChart_Manager: TFFlowChart_Manager
       Left = 1
       Top = 254
       Width = 359
-      Height = 174
+      Height = 206
       Align = alClient
       Font.Charset = RUSSIAN_CHARSET
       Font.Color = clWindowText
@@ -77,7 +77,7 @@ object FFlowChart_Manager: TFFlowChart_Manager
     Left = 361
     Top = 0
     Width = 615
-    Height = 429
+    Height = 461
     HorzScrollBar.ButtonSize = 10
     VertScrollBar.ButtonSize = 20
     VertScrollBar.ParentColor = False

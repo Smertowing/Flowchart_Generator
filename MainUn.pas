@@ -101,14 +101,15 @@ begin
   else
     begin
       RestoreDafault();
-      reMainEdit.SelStart:=0;
+    {  reMainEdit.SelStart:=0;
       reMainEdit.SelLength:=0;
       for i := 0 to reMainEdit.Lines.Count - 1 do
         begin
           reMainEdit.SelLength:=reMainEdit.SelLength + Length(reMainEdit.Lines[i]);
         end;
+      reMainEdit.SelAttributes.Color := clBlack;       }
+      reMainEdit.SelectAll;
       reMainEdit.SelAttributes.Color := clBlack;
-
       a:=-1;
       b:=-1;
 
@@ -122,7 +123,7 @@ begin
           begin
             temp:=temp+length(StrList[i]);
           end;
-        reMainEdit.SelStart:=temp+1+a;
+        reMainEdit.SelStart:=temp+a;
         reMainEdit.SelLength:=0;
         for i := a to b do
           begin
@@ -147,7 +148,7 @@ begin
       for i := 0 to CurrMemo.Lines.Count do
         S:=S+CurrMemo.Lines[i];
 
-      FindBranchAndResetCaption(CurrMemo.Left,CurrMemo.Top,S);
+      FindBranchAndResetCaption(CurrMemoX,CurrMemoY,S);
       CurrMemo.Visible:=false;
       pbMain.Repaint;
     end;
@@ -176,6 +177,8 @@ begin
         begin
           if CurrMemo <> nil then
             freeandnil(CurrMemo);
+          CurrMemoX := a;
+          CurrMemoY := b;
           CurrMemo := TMemo.Create(Self);
           with CurrMemo do
             begin
@@ -318,7 +321,9 @@ begin
     fileSaveBMP.Enabled:=true;
 
     except
-       clearScreen(FFlowchart_Manager,pbMain);
+      pbMain.Height := FFlowChart_Manager.ClientHeight;
+      pbMain.Width := FFlowChart_Manager.ClientWidth;
+      clearScreen(FFlowchart_Manager,pbMain);
        strList.Free;
       if TreeStructure <> nil then
         EraseTree(TreeStructure);
@@ -351,7 +356,7 @@ end;
 procedure TFFlowChart_Manager.StartRoutine();
 var
   S,tmpS:string;
-  Posit, i:Integer;
+  Posit:Integer;
 begin
 reMainEdit.Lines.Clear;
 //if FileExists(currentFile) then
@@ -431,7 +436,6 @@ end;
 procedure TFFlowChart_Manager.saveBMPFile;
 var
   path: string;
-  oldScale: real;
   tempWidth, tempHeight: Integer;
 const
   ExportScale = 4;
@@ -461,14 +465,12 @@ end;
 procedure TFFlowChart_Manager.savePNGFile;
 var
   path: string;
-  oldScale: real;
   png : TPngImage;
   bitmap: TBitmap;
   tempWidth, tempHeight: Integer;
 const
   ExportScale = 4;
 begin
-  oldScale := FScale;
   path := saveFile(FPng);
   if path <> '' then
   begin
